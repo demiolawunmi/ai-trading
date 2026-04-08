@@ -1,0 +1,2 @@
+- For MVP paper trading, enforce adapter-level simulation only for Jupiter/Polymarket; exclude live signing/execution paths from UI.
+- Local worker should be the only process allowed to touch private keys/API secrets; web UI gets opaque connection status only.

@@ -1,0 +1,4 @@
+- 2026-current Jupiter guidance: use Swap API V2 /order + /execute for managed landing; /build is Metis-only and requires own RPC send path.
+- Jupiter rate limit constraints for MVP prototyping: keyless 0.5 RPS, 60s sliding window, shared account bucket, 429 on exceed.
+- Polymarket CLOB auth is 2-level: L1 EIP-712 for credential creation/derivation, L2 HMAC headers for trade endpoints; order payloads still signed locally.
+- Secret-handling boundary validated: keep builder/L2 secrets server-side; remote signer endpoint pattern is documented for builder headers.
