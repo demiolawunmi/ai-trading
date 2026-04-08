@@ -1,0 +1,270 @@
+{
+  "version": 1,
+  "balances": {
+    "baseCurrency": "USD",
+    "cash": 681.66385798,
+    "buyingPower": 681.66385798,
+    "equity": 1002.97219794,
+    "holdings": [
+      {
+        "venue": "stocks",
+        "symbol": "AAPL",
+        "quantity": 2,
+        "averageCost": 159.16807101,
+        "marketPrice": 160.65416998
+      }
+    ]
+  },
+  "orders": [
+    {
+      "status": "accepted",
+      "orderId": "ord-000002",
+      "venue": "stocks",
+      "symbol": "AAPL",
+      "side": "buy",
+      "requestedQuantity": 1,
+      "requestedNotional": 157.79304822
+    },
+    {
+      "status": "accepted",
+      "orderId": "ord-000002",
+      "venue": "stocks",
+      "symbol": "AAPL",
+      "side": "buy",
+      "requestedQuantity": 1,
+      "requestedNotional": 157.79304822
+    },
+    {
+      "status": "accepted",
+      "orderId": "ord-000002",
+      "venue": "stocks",
+      "symbol": "AAPL",
+      "side": "buy",
+      "requestedQuantity": 1,
+      "requestedNotional": 157.79304822
+    },
+    {
+      "status": "accepted",
+      "orderId": "ord-000002",
+      "venue": "stocks",
+      "symbol": "AAPL",
+      "side": "buy",
+      "requestedQuantity": 1,
+      "requestedNotional": 157.79304822
+    },
+    {
+      "status": "accepted",
+      "orderId": "ord-000002",
+      "venue": "stocks",
+      "symbol": "AAPL",
+      "side": "buy",
+      "requestedQuantity": 1,
+      "requestedNotional": 157.79304822
+    },
+    {
+      "status": "accepted",
+      "venue": "stocks",
+      "symbol": "AAPL",
+      "side": "buy",
+      "orderId": "ord-000002",
+      "requestedQuantity": 1,
+      "requestedNotional": 100,
+      "filledQuantity": 1,
+      "averageFillPrice": 160.65416998
+    }
+  ],
+  "fills": [
+    {
+      "type": "FillPartial",
+      "correlationId": "corr-000001",
+      "timestamp": "2026-01-01T00:00:00.060Z",
+      "payload": {
+        "orderId": "ord-000002",
+        "venue": "stocks",
+        "symbol": "AAPL",
+        "side": "buy",
+        "quantity": 0.38525002,
+        "price": 157.8540204,
+        "remainingQuantity": 0.61474998
+      }
+    },
+    {
+      "type": "FillComplete",
+      "correlationId": "corr-000001",
+      "timestamp": "2026-01-01T00:00:00.087Z",
+      "payload": {
+        "orderId": "ord-000002",
+        "venue": "stocks",
+        "symbol": "AAPL",
+        "side": "buy",
+        "quantity": 1,
+        "averagePrice": 157.68197203
+      }
+    },
+    {
+      "type": "FillPartial",
+      "correlationId": "corr-000001",
+      "timestamp": "2026-01-01T00:00:00.059Z",
+      "payload": {
+        "orderId": "ord-000002",
+        "venue": "stocks",
+        "symbol": "AAPL",
+        "side": "buy",
+        "quantity": 0.38525002,
+        "price": 157.8540204,
+        "remainingQuantity": 0.61474998
+      }
+    },
+    {
+      "type": "FillComplete",
+      "correlationId": "corr-000001",
+      "timestamp": "2026-01-01T00:00:00.086Z",
+      "payload": {
+        "orderId": "ord-000002",
+        "venue": "stocks",
+        "symbol": "AAPL",
+        "side": "buy",
+        "quantity": 1,
+        "averagePrice": 157.68197203
+      }
+    },
+    {
+      "type": "FillPartial",
+      "correlationId": "corr-000001",
+      "timestamp": "2026-01-01T00:00:00.060Z",
+      "payload": {
+        "orderId": "ord-000002",
+        "venue": "stocks",
+        "symbol": "AAPL",
+        "side": "buy",
+        "quantity": 0.38525002,
+        "price": 157.8540204,
+        "remainingQuantity": 0.61474998
+      }
+    },
+    {
+      "type": "FillComplete",
+      "correlationId": "corr-000001",
+      "timestamp": "2026-01-01T00:00:00.087Z",
+      "payload": {
+        "orderId": "ord-000002",
+        "venue": "stocks",
+        "symbol": "AAPL",
+        "side": "buy",
+        "quantity": 1,
+        "averagePrice": 157.68197203
+      }
+    },
+    {
+      "type": "FillPartial",
+      "correlationId": "corr-000001",
+      "timestamp": "2026-01-01T00:00:00.060Z",
+      "payload": {
+        "orderId": "ord-000002",
+        "venue": "stocks",
+        "symbol": "AAPL",
+        "side": "buy",
+        "quantity": 0.38525002,
+        "price": 157.8540204,
+        "remainingQuantity": 0.61474998
+      }
+    },
+    {
+      "type": "FillComplete",
+      "correlationId": "corr-000001",
+      "timestamp": "2026-01-01T00:00:00.087Z",
+      "payload": {
+        "orderId": "ord-000002",
+        "venue": "stocks",
+        "symbol": "AAPL",
+        "side": "buy",
+        "quantity": 1,
+        "averagePrice": 157.68197203
+      }
+    },
+    {
+      "type": "FillPartial",
+      "correlationId": "corr-000001",
+      "timestamp": "2026-01-01T00:00:00.059Z",
+      "payload": {
+        "orderId": "ord-000002",
+        "venue": "stocks",
+        "symbol": "AAPL",
+        "side": "buy",
+        "quantity": 0.38525002,
+        "price": 157.8540204,
+        "remainingQuantity": 0.61474998
+      }
+    },
+    {
+      "type": "FillComplete",
+      "correlationId": "corr-000001",
+      "timestamp": "2026-01-01T00:00:00.086Z",
+      "payload": {
+        "orderId": "ord-000002",
+        "venue": "stocks",
+        "symbol": "AAPL",
+        "side": "buy",
+        "quantity": 1,
+        "averagePrice": 157.68197203
+      }
+    },
+    {
+      "type": "FillPartial",
+      "correlationId": "corr-000001",
+      "timestamp": "2026-01-01T00:00:00.059Z",
+      "payload": {
+        "orderId": "ord-000002",
+        "venue": "stocks",
+        "symbol": "AAPL",
+        "side": "buy",
+        "quantity": 0.38525002,
+        "price": 160.82946134,
+        "remainingQuantity": 0.61474998
+      }
+    },
+    {
+      "type": "FillComplete",
+      "correlationId": "corr-000001",
+      "timestamp": "2026-01-01T00:00:00.086Z",
+      "payload": {
+        "orderId": "ord-000002",
+        "venue": "stocks",
+        "symbol": "AAPL",
+        "side": "buy",
+        "quantity": 1,
+        "averagePrice": 160.65416998
+      }
+    }
+  ],
+  "strategyRuns": [
+    {
+      "id": "run-000003",
+      "strategyId": "mean-reversion-v1",
+      "status": "stopped",
+      "createdAt": "2026-01-01T00:00:00.089Z",
+      "updatedAt": "2026-01-01T00:00:00.091Z",
+      "startedAt": "2026-01-01T00:00:00.090Z",
+      "stoppedAt": "2026-01-01T00:00:00.091Z"
+    },
+    {
+      "id": "run-000003",
+      "strategyId": "mean-reversion-v1",
+      "status": "stopped",
+      "createdAt": "2026-01-01T00:00:00.089Z",
+      "updatedAt": "2026-01-01T00:00:00.091Z",
+      "startedAt": "2026-01-01T00:00:00.090Z",
+      "stoppedAt": "2026-01-01T00:00:00.091Z"
+    },
+    {
+      "id": "run-000001",
+      "strategyId": "mean-reversion",
+      "status": "stopped",
+      "createdAt": "2026-01-01T00:00:00.004Z",
+      "updatedAt": "2026-01-01T00:00:00.006Z",
+      "startedAt": "2026-01-01T00:00:00.005Z",
+      "stoppedAt": "2026-01-01T00:00:00.006Z"
+    }
+  ],
+  "updatedAt": "2026-04-08T04:22:04.828Z"
+}

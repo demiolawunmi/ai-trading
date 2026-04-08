@@ -1,0 +1,95 @@
+{
+  "version": 1,
+  "balances": {
+    "baseCurrency": "USD",
+    "cash": 99684.82600154,
+    "buyingPower": 99684.82600154,
+    "equity": 99999.81005438,
+    "holdings": [
+      {
+        "venue": "stocks",
+        "symbol": "AAPL",
+        "quantity": 2,
+        "averageCost": 157.58699923,
+        "marketPrice": 157.49202642
+      }
+    ]
+  },
+  "orders": [
+    {
+      "status": "rejected",
+      "venue": "stocks",
+      "symbol": "AAPL",
+      "side": "buy",
+      "reasonCode": "INVALID_ORDER_SIZE",
+      "message": "Resolved quantity 0.6222444561117894 is below minimum 1",
+      "requestedNotional": 100
+    },
+    {
+      "status": "accepted",
+      "venue": "stocks",
+      "symbol": "AAPL",
+      "side": "buy",
+      "orderId": "ord-000002",
+      "requestedQuantity": 1,
+      "requestedNotional": 157.79304822,
+      "filledQuantity": 1,
+      "averageFillPrice": 157.68197204
+    },
+    {
+      "status": "accepted",
+      "venue": "stocks",
+      "symbol": "AAPL",
+      "side": "buy",
+      "orderId": "ord-000004",
+      "requestedQuantity": 1,
+      "requestedNotional": 157.79304822,
+      "filledQuantity": 1,
+      "averageFillPrice": 157.49202642
+    }
+  ],
+  "fills": [
+    {
+      "type": "FillPartial",
+      "correlationId": "corr-000001",
+      "timestamp": "2026-01-01T00:00:00.059Z",
+      "payload": {
+        "orderId": "ord-000002",
+        "venue": "stocks",
+        "symbol": "AAPL",
+        "side": "buy",
+        "quantity": 0.38525002,
+        "price": 157.8540204,
+        "remainingQuantity": 0.61474998
+      }
+    },
+    {
+      "type": "FillComplete",
+      "correlationId": "corr-000001",
+      "timestamp": "2026-01-01T00:00:00.086Z",
+      "payload": {
+        "orderId": "ord-000002",
+        "venue": "stocks",
+        "symbol": "AAPL",
+        "side": "buy",
+        "quantity": 1,
+        "averagePrice": 157.68197203
+      }
+    },
+    {
+      "type": "FillComplete",
+      "correlationId": "corr-000003",
+      "timestamp": "2026-01-01T00:00:00.180Z",
+      "payload": {
+        "orderId": "ord-000004",
+        "venue": "stocks",
+        "symbol": "AAPL",
+        "side": "buy",
+        "quantity": 1,
+        "averagePrice": 157.49202642
+      }
+    }
+  ],
+  "strategyRuns": [],
+  "updatedAt": "2026-04-08T04:19:26.158Z"
+}
