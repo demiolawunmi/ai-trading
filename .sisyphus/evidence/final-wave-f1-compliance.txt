@@ -1,0 +1,54 @@
+[F1 Plan Compliance Audit - oracle]
+Timestamp: ${ts}
+Plan: .sisyphus/plans/paper-trading-terminal-mvp.md
+Scope: Tasks 1-12 literal compliance re-audit (final wave gate)
+
+1) Scope Fidelity
+- Audited only plan-defined MVP scope and guardrails; no source modifications performed.
+- Re-checked prior rejection condition (Task 12 e2e portfolio mutation path).
+- Verified e2e uses UI-driven portfolio update flow on Portfolio page, not direct Playwright request patch bypass.
+
+2) Acceptance Criteria Review (Tasks 1-12)
+- Task 1: PASS - worker health route returns exact `{"status":"ok"}` in current implementation.
+- Task 2: PASS - domain contracts + runtime validation + deterministic event metadata (`timestamp`, `correlationId`) covered by domain tests.
+- Task 3: PASS - deterministic engine replay + rejection reason codes + partial/full fill behavior covered by worker tests/evidence.
+- Task 4: PASS - local persistence + replay + corruption recovery evidence present.
+- Task 5: PASS - four simulated adapters under shared interface with normalized failure mapping verified in adapter tests.
+- Task 6: PASS - API endpoints for health/connect/portfolio/quote/order/strategy/metrics present and exercised by evidence.
+- Task 7: PASS - Chakra shell/routes/components delivered for Terminal/Portfolio/Strategies/Metrics/Connect.
+- Task 8: PASS - manual terminal market-order workflow (quote preview + submit + activity table) implemented and e2e-covered.
+- Task 9: PASS - connect management UI with local credential handling, masking/reveal controls, and status checks implemented.
+- Task 10: PASS - strategy runtime lifecycle + single-active-instance enforcement + restart metadata behavior validated.
+- Task 11: PASS - PnL/risk metrics computation + filtering + warning handling implemented with deterministic tests.
+- Task 12: PASS - integration hardening, e2e flow, and runbook present; e2e chain includes connect -> trade -> UI portfolio save -> metrics.
+
+3) Prior Reject Condition Re-check (Mandatory)
+- Search result: no `request.patch('/api/portfolio')` usage in e2e test sources.
+- Verified flow in `apps/web/e2e/integration-flow.spec.ts` performs:
+  - navigate `#/portfolio`
+  - edit Cash/Buying Power form controls
+  - click `Save Portfolio`
+  - assert `Portfolio saved.`
+- Conclusion: previous bypass condition is resolved.
+
+4) Evidence Quality Assessment
+- Task evidence artifacts exist for tasks 1-12 in `.sisyphus/evidence/`.
+- Coverage quality: strong for executable checks and endpoint/test traces.
+- Non-blocking note: lint warning remains in `apps/web/src/pages/MetricsPage.tsx` (`react-hooks/exhaustive-deps`), but lint exits 0 and does not violate plan gate as written.
+
+5) Gate Command Verification
+Executed from repo root:
+`npm run lint && npm run test && npm run build && npm run test:e2e`
+Result:
+- `lint`: PASS (1 warning, 0 errors)
+- `test`: PASS
+- `build`: PASS
+- `test:e2e`: PASS (1/1)
+
+VERDICT: APPROVE
+Rationale: All Tasks 1-12 are compliant with plan acceptance expectations; prior F1 rejection condition (portfolio API bypass in e2e) is specifically remediated and re-validated.
+---
+[Audit note]
+Timestamp: 2026-04-08T05:20:44Z
+- Timestamp placeholder in prior header was a literal token; authoritative audit time is this line's timestamp.
+---

@@ -1,0 +1,6 @@
+# Task 6 API Invalid Payload Evidence
+timestamp=2026-04-08T03:43:24Z
+
+## POST /api/orders/market (missing venue)
+{"error":{"code":"VALIDATION_ERROR","message":"Invalid request payload","issues":[{"path":"$.venue","message":"is required"}]}}
+HTTP_STATUS:400

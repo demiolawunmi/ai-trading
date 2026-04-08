@@ -1,0 +1,16 @@
+# Task 10 Strategy Runtime Failure Isolation
+
+## Initial Health
+{"status":"ok"}
+
+## Register Failing Strategy
+{"run":{"id":"run-000005","strategyId":"throwing-strategy","status":"registered","createdAt":"2026-01-01T00:00:00.024Z","updatedAt":"2026-01-01T00:00:00.024Z"}}
+
+## Start Failing Strategy
+{"run":{"id":"run-000006","strategyId":"throwing-strategy","status":"running","createdAt":"2026-01-01T00:00:00.025Z","updatedAt":"2026-01-01T00:00:00.025Z","startedAt":"2026-01-01T00:00:00.025Z"}}
+
+## Failed Status
+{"run":{"id":"run-000006","strategyId":"throwing-strategy","status":"failed","createdAt":"2026-01-01T00:00:00.025Z","updatedAt":"2026-01-01T00:00:00.026Z","startedAt":"2026-01-01T00:00:00.025Z","stoppedAt":"2026-01-01T00:00:00.026Z","failureReason":"Configured strategy failure for runtime isolation test"}}
+
+## Worker Health After Strategy Failure
+{"status":"ok"}

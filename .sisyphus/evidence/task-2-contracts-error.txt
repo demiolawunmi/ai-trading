@@ -1,0 +1,25 @@
+
+> @ai-trading/domain@1.0.0 test
+> vitest run -t rejects malformed order side with explicit path --reporter=verbose
+
+
+ RUN  v1.6.1 /Users/demiladeolawunmi/IdeaProjects/ai-trading/packages/domain
+
+ ✓ tests/contracts.validation.test.ts > domain contract validation > rejects malformed order side with explicit path
+
+ Test Files  1 passed (1)
+      Tests  1 passed | 3 skipped (4)
+   Start at  22:27:31
+   Duration  182ms (transform 29ms, setup 0ms, collect 31ms, tests 1ms, environment 0ms, prepare 42ms)
+
+
+--- explicit invalid payload validation output ---
+{
+  "success": false,
+  "issues": [
+    {
+      "path": "$.side",
+      "message": "must be one of: buy, sell"
+    }
+  ]
+}

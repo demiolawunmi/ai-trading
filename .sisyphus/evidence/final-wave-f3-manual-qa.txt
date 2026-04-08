@@ -1,0 +1,59 @@
+Final Wave F3 - Real Manual QA
+Plan: .sisyphus/plans/paper-trading-terminal-mvp.md
+Date: 2026-04-08
+Tester: OpenCode (unspecified-high with Playwright MCP)
+
+Scope executed (manual UI):
+1) Connect save flow
+2) Manual trade flow (market order)
+3) Portfolio UI update/save flow
+4) Metrics validation flow
+5) Negative path: invalid symbol rejection in terminal UI
+
+Environment and run commands:
+- Worker health check:
+  $ curl -s http://127.0.0.1:4000/health
+  {"status":"ok"}
+- Web started for QA:
+  $ npm run dev --workspace=@ai-trading/web
+- Smoke evidence (worker API state after manual UI actions):
+  - .sisyphus/evidence/f3-smoke-commands.txt
+
+Manual step log and assertions:
+- STEP 1 (Connect): Opened #/connect, entered Stocks API key/secret, clicked Save Locally, then Check Connections.
+  ASSERT: PASS - status row for Stocks changed to "Configured" + "connected".
+  EVIDENCE: .sisyphus/evidence/f3-connect.png
+
+- STEP 2 (Terminal trade): Opened #/terminal with Venue=stocks, Symbol=AAPL, Notional=100, clicked Preview Quote, then Submit Market Order.
+  ASSERT: PASS - quote preview populated and "Order accepted" toast shown; activity table appended accepted order/fill rows.
+  EVIDENCE: .sisyphus/evidence/f3-terminal-trade.png
+
+- STEP 3 (Portfolio save): Opened #/portfolio, changed Cash=250000 and Buying Power=250000, clicked Save Portfolio.
+  ASSERT: PASS - "Portfolio saved." notice displayed and saved values persisted in fields.
+  EVIDENCE: .sisyphus/evidence/f3-portfolio-saved.png
+
+- STEP 4 (Metrics validation): Opened #/metrics and waited for load.
+  ASSERT: PASS - metrics table populated with non-empty values including Realized/Unrealized PnL and Total Equity.
+  EVIDENCE: .sisyphus/evidence/f3-metrics-updated.png
+
+- STEP 5 (Negative path - invalid symbol): Returned to #/terminal, set Symbol=@@@.
+  ASSERT: PASS - inline validation message shown ("Use stock symbols like AAPL."); Preview Quote and Submit Market Order both disabled.
+  EVIDENCE: .sisyphus/evidence/f3-negative-invalid-symbol.png
+
+Console and network checks:
+- Console capture:
+  - .sisyphus/evidence/f3-console.log
+  - Result: "Total messages: 11 (Errors: 0, Warnings: 0)"
+- Network capture:
+  - .sisyphus/evidence/f3-network.log
+  - Observed successful API traffic during manual QA (examples): /api/quote 200, /api/orders 200, /api/fills 200, /health 200.
+
+Post-run command evidence:
+- .sisyphus/evidence/f3-smoke-commands.txt includes:
+  - /health => {"status":"ok"}
+  - /api/portfolio => persisted cash/buyingPower updates + holdings
+  - /api/metrics => populated metrics payload (hasActivity=true)
+  - /api/orders => accepted order list
+
+VERDICT: APPROVE
+Reason: End-user journey and required negative-path behavior were manually executed in the UI with passing assertions, screenshots, and command/network evidence.

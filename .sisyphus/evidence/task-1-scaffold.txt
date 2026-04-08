@@ -1,0 +1,14 @@
+Scaffold verification run outputs
+
+1) npm ci
+Output: added 452 packages
+
+2) npm run lint
+Output: Command executed successfully
+
+3) npm run build
+Output: built @ai-trading/web and other workspaces successfully (vite build completed)
+
+4) Worker health check
+Command: started worker with "npm run start" in apps/worker and ran: curl -s http://localhost:4000/health
+Output: {"status":"ok","app":"ai-trading"}

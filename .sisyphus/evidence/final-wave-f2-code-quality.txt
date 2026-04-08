@@ -1,0 +1,84 @@
+[2026-04-08T05:21:53Z] F2 Code Quality Review — paper-trading-terminal-mvp
+
+VERDICT: REJECT
+
+Scope reviewed: worker/web/domain implementation for Tasks 6-12 (API, terminal flow, connect, strategy runtime, metrics, persistence, E2E).
+
+Quality table:
+| Area | Status | Evidence |
+|---|---|---|
+| Correctness | FAIL | Strategy-level metrics compute exposure/sharpe against account `totalEquity` instead of strategy-only capital baseline, which can materially distort per-strategy risk ratios (`apps/worker/src/metrics/analytics.ts:303`, `apps/worker/src/metrics/analytics.ts:317`). |
+| Tests | PASS | Command `npm run test` passed: worker 9 files / 34 tests + domain 1 file / 4 tests; `npm run test:e2e` passed with 1 integration flow (`apps/web/e2e/integration-flow.spec.ts:9`). |
+| Types | PASS | `lsp_diagnostics` reported 0 diagnostics across `apps/worker`, `apps/web`, `packages/domain`; anti-pattern scan found no `as any`, `@ts-ignore`, TODO/FIXME/HACK, or empty catches in app/package code. |
+| API consistency | FAIL | Duplicate quote endpoints `/api/quote` and `/api/quotes` with same behavior increase client ambiguity and contract drift risk (`apps/worker/src/api/router.ts:375`, `apps/worker/src/api/router.ts:391`). |
+| Maintainability | FAIL | Lint gate is not clean: `react-hooks/exhaustive-deps` warning in metrics page effect (`apps/web/src/pages/MetricsPage.tsx:108`), signaling unstable dependency discipline in a key data-loading path. |
+
+Command evidence:
+- `npm run lint` => PASS exit code, but 1 warning in `apps/web/src/pages/MetricsPage.tsx:108` (missing `load` dependency).
+- `npm run test` => PASS (worker/domain suites green).
+- `npm run build` => PASS (domain ts build, web vite build, worker ts build).
+- `npm run test:e2e` => PASS (1/1 test).
+- `lsp_diagnostics` => 0 diagnostics in worker/web/domain.
+- `grep` anti-pattern scan in `apps/**` and `packages/**` => no matches.
+
+Blocking rationale:
+- Current codebase is functional and test-green, but strict quality gate requires consistent API surface and reliable metric semantics; the noted correctness/API/maintainability defects are sufficient to block approval.
+
+[2026-04-08T01:31:00Z] F2 Code Quality Review — follow-up after blocker remediation
+
+VERDICT: APPROVE
+
+Scope reviewed: targeted fixes for prior F2 blockers (strategy metric denominator semantics, quote endpoint ambiguity, MetricsPage hook dependency warning) plus regression checks.
+
+Quality table:
+| Area | Status | Evidence |
+|---|---|---|
+| Correctness | PASS | Strategy scope now computes exposure from strategy capital baseline (`computeStrategyCapitalBaseline`) and uses per-trade basis returns for Sharpe-like ratio in strategy analytics path (`apps/worker/src/metrics/analytics.ts`). |
+| API consistency | PASS | Canonical quote endpoint is singular `POST /api/quote`; duplicate plural route removed from router (`apps/worker/src/api/router.ts`). |
+| Maintainability | PASS | Metrics page data-loading callbacks are stable (`useCallback`) and effect dependencies are complete; lint warning cleared (`apps/web/src/pages/MetricsPage.tsx`). |
+| Tests | PASS | Added regression assertion that `/api/quote` succeeds and `/api/quotes` is 404 (`apps/worker/tests/apiResilience.integration.test.ts`); metrics expectations updated to strategy baseline semantics (`apps/worker/tests/metrics.analytics.test.ts`). |
+| Types/Diagnostics | PASS | `lsp_diagnostics` reports 0 diagnostics for changed source + test files. |
+
+Verification summary:
+- `npm run lint && npm run test && npm run build` => PASS
+- Worker tests: 9 files / 35 tests passing
+- Domain tests: 1 file / 4 tests passing
+
+Blocking findings status:
+1) Strategy metrics denominator semantics — RESOLVED
+2) Duplicate `/api/quote` + `/api/quotes` ambiguity — RESOLVED
+3) `react-hooks/exhaustive-deps` warning in Metrics page — RESOLVED
+
+[2026-04-08T05:36:37Z] F2 Code Quality Re-Review — post-remediation (previous blockers only)
+
+VERDICT: APPROVE
+
+Re-evaluated blockers from prior F2 review only:
+
+1) Strategy metrics denominator semantics
+- Status: RESOLVED
+- Evidence: strategy analytics now computes strategy-specific capital baseline from strategy-window fills (`computeStrategyCapitalBaseline`) and passes it as `exposureBaseline`; strategy Sharpe-like path uses per-trade basis when requested (`usePerTradeSharpeBasis: true`) in strategy scope.
+- Citations: `apps/worker/src/metrics/analytics.ts:234`, `apps/worker/src/metrics/analytics.ts:385`, `apps/worker/src/metrics/analytics.ts:387`.
+- Test confirmation: strategy metrics expectation updated and passing (`exposure: 0.615`) in strategy-window test.
+- Citation: `apps/worker/tests/metrics.analytics.test.ts:149`.
+
+2) Quote endpoint duplication ambiguity
+- Status: RESOLVED
+- Evidence: source router contains canonical `POST /quote` handler only; duplicate `/quotes` handler removed.
+- Citation: `apps/worker/src/api/router.ts:375`.
+- Grep verification: no `/quotes` handler found in `apps/worker/src`.
+- Test confirmation: integration test asserts `/api/quote` returns 200 and deprecated `/api/quotes` returns 404.
+- Citation: `apps/worker/tests/apiResilience.integration.test.ts:177`.
+
+3) Metrics page hook dependency lint warning
+- Status: RESOLVED
+- Evidence: loader functions wrapped with `useCallback`, and effect depends on stable `load` callback + state inputs.
+- Citations: `apps/web/src/pages/MetricsPage.tsx:66`, `apps/web/src/pages/MetricsPage.tsx:91`, `apps/web/src/pages/MetricsPage.tsx:106`.
+- LSP diagnostics: none on changed files.
+
+Required command verification:
+- `npm run lint` -> PASS (no warnings/errors).
+- `npm run test` -> PASS (worker 9 files/35 tests, domain 1 file/4 tests).
+- `npm run build` -> PASS (domain, web, worker builds succeed).
+
+Conclusion: all previously blocking F2 findings are resolved with source and test evidence; quality gate for prior blockers passes.

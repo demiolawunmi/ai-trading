@@ -1,0 +1,35 @@
+# Task 10 Strategy Runtime Happy Path
+
+## Initial Health
+{"status":"ok"}
+
+## Register Strategy
+{"run":{"id":"run-000001","strategyId":"mean-reversion","status":"registered","createdAt":"2026-01-01T00:00:00.004Z","updatedAt":"2026-01-01T00:00:00.004Z"}}
+
+## Start Strategy
+{"run":{"id":"run-000002","strategyId":"mean-reversion","status":"running","createdAt":"2026-01-01T00:00:00.005Z","updatedAt":"2026-01-01T00:00:00.005Z","startedAt":"2026-01-01T00:00:00.005Z"}}
+
+## Status While Running
+{"run":{"id":"run-000002","strategyId":"mean-reversion","status":"running","createdAt":"2026-01-01T00:00:00.005Z","updatedAt":"2026-01-01T00:00:00.012Z","startedAt":"2026-01-01T00:00:00.005Z"}}
+
+## Stop Strategy
+{"run":{"id":"run-000002","strategyId":"mean-reversion","status":"stopped","createdAt":"2026-01-01T00:00:00.005Z","updatedAt":"2026-01-01T00:00:00.014Z","startedAt":"2026-01-01T00:00:00.005Z","stoppedAt":"2026-01-01T00:00:00.014Z"}}
+
+## Status After Stop
+{"run":{"id":"run-000002","strategyId":"mean-reversion","status":"stopped","createdAt":"2026-01-01T00:00:00.005Z","updatedAt":"2026-01-01T00:00:00.014Z","startedAt":"2026-01-01T00:00:00.005Z","stoppedAt":"2026-01-01T00:00:00.014Z"}}
+
+## Enforce Single Active Instance
+{"run":{"id":"run-000003","strategyId":"mean-reversion","status":"running","createdAt":"2026-01-01T00:00:00.015Z","updatedAt":"2026-01-01T00:00:00.015Z","startedAt":"2026-01-01T00:00:00.015Z"}}
+HTTP_STATUS=409
+{"error":{"code":"STRATEGY_ALREADY_RUNNING","message":"strategy mean-reversion already has an active instance"}}
+{"run":{"id":"run-000003","strategyId":"mean-reversion","status":"stopped","createdAt":"2026-01-01T00:00:00.015Z","updatedAt":"2026-01-01T00:00:00.016Z","startedAt":"2026-01-01T00:00:00.015Z","stoppedAt":"2026-01-01T00:00:00.016Z"}}
+
+## Restart Metadata Restore
+{"run":{"id":"run-000003","strategyId":"mean-reversion","status":"stopped","createdAt":"2026-01-01T00:00:00.015Z","updatedAt":"2026-01-01T00:00:00.016Z","startedAt":"2026-01-01T00:00:00.015Z","stoppedAt":"2026-01-01T00:00:00.016Z"}}
+
+## Manual Resume After Restart
+{"run":{"id":"run-000004","strategyId":"mean-reversion","status":"running","createdAt":"2026-01-01T00:00:00.017Z","updatedAt":"2026-01-01T00:00:00.017Z","startedAt":"2026-01-01T00:00:00.017Z"}}
+{"run":{"id":"run-000004","strategyId":"mean-reversion","status":"stopped","createdAt":"2026-01-01T00:00:00.017Z","updatedAt":"2026-01-01T00:00:00.023Z","startedAt":"2026-01-01T00:00:00.017Z","stoppedAt":"2026-01-01T00:00:00.023Z"}}
+
+## Final Run List
+{"runs":[{"id":"run-000001","strategyId":"mean-reversion","status":"registered","createdAt":"2026-01-01T00:00:00.004Z","updatedAt":"2026-01-01T00:00:00.004Z"},{"id":"run-000002","strategyId":"mean-reversion","status":"stopped","createdAt":"2026-01-01T00:00:00.005Z","updatedAt":"2026-01-01T00:00:00.014Z","startedAt":"2026-01-01T00:00:00.005Z","stoppedAt":"2026-01-01T00:00:00.014Z"},{"id":"run-000003","strategyId":"mean-reversion","status":"stopped","createdAt":"2026-01-01T00:00:00.015Z","updatedAt":"2026-01-01T00:00:00.016Z","startedAt":"2026-01-01T00:00:00.015Z","stoppedAt":"2026-01-01T00:00:00.016Z"},{"id":"run-000004","strategyId":"mean-reversion","status":"stopped","createdAt":"2026-01-01T00:00:00.017Z","updatedAt":"2026-01-01T00:00:00.023Z","startedAt":"2026-01-01T00:00:00.017Z","stoppedAt":"2026-01-01T00:00:00.023Z"}]}

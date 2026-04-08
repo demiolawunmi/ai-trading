@@ -1,0 +1,15 @@
+
+> @ai-trading/worker@1.0.0 test
+> vitest run --passWithNoTests tests/persistentEngine.integration.test.ts -t records sequence corruption and continues from valid records
+
+[33mThe CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.[39m
+
+ RUN  v1.6.1 /Users/demiladeolawunmi/IdeaProjects/ai-trading/apps/worker
+
+ ✓ tests/persistentEngine.integration.test.ts  (2 tests | 1 skipped) 2ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed | 1 skipped (2)
+   Start at  23:14:19
+   Duration  246ms (transform 56ms, setup 0ms, collect 64ms, tests 2ms, environment 0ms, prepare 41ms)
+
