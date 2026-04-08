@@ -1,0 +1,141 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - complementary [ref=e4]:
+      - heading "Paper Terminal" [level=1] [ref=e5]
+      - paragraph [ref=e6]: Local-first simulation shell
+      - separator [ref=e7]
+      - navigation "Primary" [ref=e8]:
+        - link "Terminal" [ref=e9] [cursor=pointer]:
+          - /url: "#/terminal"
+        - link "Portfolio" [ref=e10] [cursor=pointer]:
+          - /url: "#/portfolio"
+        - link "Strategies" [ref=e11] [cursor=pointer]:
+          - /url: "#/strategies"
+        - link "Metrics" [ref=e12] [cursor=pointer]:
+          - /url: "#/metrics"
+        - link "Connect" [ref=e13] [cursor=pointer]:
+          - /url: "#/connect"
+    - main [ref=e14]:
+      - status [ref=e83]:
+        - paragraph [ref=e84]: Worker connected
+        - paragraph [ref=e85]: Checked 12:16:29 AM
+      - generic [ref=e21]:
+        - heading "Terminal" [level=2] [ref=e22]
+        - paragraph [ref=e23]: Submit simulated market orders and review quote + fill activity from worker-backed APIs.
+        - generic [ref=e24]:
+          - group [ref=e25]:
+            - generic [ref=e26]: Venue
+            - generic [ref=e27]:
+              - combobox "Venue" [ref=e28]:
+                - option "stocks" [selected]
+                - option "crypto"
+                - option "jupiter"
+                - option "polymarket"
+              - generic:
+                - img
+          - group [ref=e29]:
+            - generic [ref=e30]: Symbol
+            - textbox "Symbol" [ref=e31]:
+              - /placeholder: AAPL
+              - text: AAPL
+          - group [ref=e32]:
+            - generic [ref=e33]: Side
+            - radiogroup "Side" [ref=e34]:
+              - generic [ref=e35]:
+                - generic [ref=e36] [cursor=pointer]:
+                  - radio "Buy" [checked] [ref=e37]
+                  - generic [ref=e39]: Buy
+                - generic [ref=e40] [cursor=pointer]:
+                  - radio "Sell" [ref=e41]
+                  - generic [ref=e43]: Sell
+          - group [ref=e44]:
+            - generic [ref=e45]: Amount Type
+            - radiogroup "Amount Type" [ref=e46]:
+              - generic [ref=e47]:
+                - generic [ref=e48] [cursor=pointer]:
+                  - radio "Quantity" [checked] [ref=e49]
+                  - generic [ref=e51]: Quantity
+                - generic [ref=e52] [cursor=pointer]:
+                  - radio "Notional" [ref=e53]
+                  - generic [ref=e55]: Notional
+          - group [ref=e56]:
+            - generic [ref=e57]: Quantity
+            - spinbutton "Quantity" [ref=e106]: "1"
+        - generic [ref=e59]:
+          - button "Preview Quote" [ref=e60] [cursor=pointer]
+          - button "Submit Market Order" [ref=e61] [cursor=pointer]
+        - generic [ref=e62]:
+          - paragraph [ref=e63]: Quote Preview
+          - generic [ref=e108]:
+            - generic [ref=e110]:
+              - term [ref=e111]: Bid
+              - definition [ref=e112]: "157.635255"
+            - generic [ref=e114]:
+              - term [ref=e115]: Ask
+              - definition [ref=e116]: "157.950841"
+            - generic [ref=e118]:
+              - term [ref=e119]: Last
+              - definition [ref=e120]: "157.793048"
+            - generic [ref=e122]:
+              - term [ref=e123]: Timestamp
+              - definition [ref=e124]: 9/24/2026, 12:54:17 AM
+        - alert [ref=e125]:
+          - img [ref=e127]
+          - generic [ref=e129]: Order accepted
+          - generic [ref=e130]: stocks AAPL BUY
+        - table "Terminal activity table" [ref=e66]:
+          - rowgroup [ref=e67]:
+            - row "# Type Venue Symbol Side Status Details Reason" [ref=e68]:
+              - columnheader "#" [ref=e69]
+              - columnheader "Type" [ref=e70]
+              - columnheader "Venue" [ref=e71]
+              - columnheader "Symbol" [ref=e72]
+              - columnheader "Side" [ref=e73]
+              - columnheader "Status" [ref=e74]
+              - columnheader "Details" [ref=e75]
+              - columnheader "Reason" [ref=e76]
+          - rowgroup [ref=e77]:
+            - row "1 order stocks AAPL BUY rejected Notional 100 INVALID_ORDER_SIZE" [ref=e97]:
+              - cell "1" [ref=e98]
+              - cell "order" [ref=e99]
+              - cell "stocks" [ref=e100]
+              - cell "AAPL" [ref=e101]
+              - cell "BUY" [ref=e102]
+              - cell "rejected" [ref=e103]
+              - cell "Notional 100" [ref=e104]
+              - cell "INVALID_ORDER_SIZE" [ref=e105]
+            - row "2 order stocks AAPL BUY accepted Notional 157.79 --" [ref=e131]:
+              - cell "2" [ref=e132]
+              - cell "order" [ref=e133]
+              - cell "stocks" [ref=e134]
+              - cell "AAPL" [ref=e135]
+              - cell "BUY" [ref=e136]
+              - cell "accepted" [ref=e137]
+              - cell "Notional 157.79" [ref=e138]
+              - cell "--" [ref=e139]
+            - row "1 fill-partial stocks AAPL BUY filled Qty 0.38525 @ 157.85402 --" [ref=e140]:
+              - cell "1" [ref=e141]
+              - cell "fill-partial" [ref=e142]
+              - cell "stocks" [ref=e143]
+              - cell "AAPL" [ref=e144]
+              - cell "BUY" [ref=e145]
+              - cell "filled" [ref=e146]
+              - cell "Qty 0.38525 @ 157.85402" [ref=e147]
+              - cell "--" [ref=e148]
+            - row "2 fill-complete stocks AAPL BUY filled Qty 1 @ 157.681972 --" [ref=e149]:
+              - cell "2" [ref=e150]
+              - cell "fill-complete" [ref=e151]
+              - cell "stocks" [ref=e152]
+              - cell "AAPL" [ref=e153]
+              - cell "BUY" [ref=e154]
+              - cell "filled" [ref=e155]
+              - cell "Qty 1 @ 157.681972" [ref=e156]
+              - cell "--" [ref=e157]
+        - paragraph [ref=e82]: Market orders only. Advanced order types are intentionally out of scope for this MVP.
+  - generic:
+    - region "Notifications-top"
+    - region "Notifications-top-left"
+    - region "Notifications-top-right"
+    - region "Notifications-bottom-left"
+    - region "Notifications-bottom"
+    - region "Notifications-bottom-right"

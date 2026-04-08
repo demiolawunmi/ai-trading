@@ -1,0 +1,159 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - complementary [ref=e4]:
+      - heading "Paper Terminal" [level=1] [ref=e5]
+      - paragraph [ref=e6]: Local-first simulation shell
+      - separator [ref=e7]
+      - navigation "Primary" [ref=e8]:
+        - link "Terminal" [ref=e9] [cursor=pointer]:
+          - /url: "#/terminal"
+        - link "Portfolio" [ref=e10] [cursor=pointer]:
+          - /url: "#/portfolio"
+        - link "Strategies" [ref=e11] [cursor=pointer]:
+          - /url: "#/strategies"
+        - link "Metrics" [ref=e12] [cursor=pointer]:
+          - /url: "#/metrics"
+        - link "Connect" [ref=e13] [cursor=pointer]:
+          - /url: "#/connect"
+    - main [ref=e14]:
+      - status [ref=e83]:
+        - paragraph [ref=e84]: Worker connected
+        - paragraph [ref=e85]: Checked 12:19:19 AM
+      - generic [ref=e161]:
+        - heading "Terminal" [level=2] [ref=e162]
+        - paragraph [ref=e163]: Submit simulated market orders and review quote + fill activity from worker-backed APIs.
+        - generic [ref=e164]:
+          - group [ref=e165]:
+            - generic [ref=e166]: Venue
+            - generic [ref=e167]:
+              - combobox "Venue" [ref=e168]:
+                - option "stocks" [selected]
+                - option "crypto"
+                - option "jupiter"
+                - option "polymarket"
+              - generic:
+                - img
+          - group [ref=e169]:
+            - generic [ref=e170]: Symbol
+            - textbox "Symbol" [ref=e171]:
+              - /placeholder: AAPL
+              - text: AAPL
+          - group [ref=e172]:
+            - generic [ref=e173]: Side
+            - radiogroup "Side" [ref=e174]:
+              - generic [ref=e175]:
+                - generic [ref=e176] [cursor=pointer]:
+                  - radio "Buy" [checked] [ref=e177]
+                  - generic [ref=e179]: Buy
+                - generic [ref=e180] [cursor=pointer]:
+                  - radio "Sell" [ref=e181]
+                  - generic [ref=e183]: Sell
+          - group [ref=e184]:
+            - generic [ref=e185]: Amount Type
+            - radiogroup "Amount Type" [ref=e186]:
+              - generic [ref=e187]:
+                - generic [ref=e188] [cursor=pointer]:
+                  - radio "Quantity" [checked] [ref=e189]
+                  - generic [ref=e191]: Quantity
+                - generic [ref=e192] [cursor=pointer]:
+                  - radio "Notional" [ref=e193]
+                  - generic [ref=e195]: Notional
+          - group [ref=e196]:
+            - generic [ref=e197]: Quantity
+            - spinbutton "Quantity" [ref=e272]: "1"
+        - generic [ref=e199]:
+          - button "Preview Quote" [ref=e200] [cursor=pointer]
+          - button "Submit Market Order" [ref=e201] [cursor=pointer]
+        - generic [ref=e202]:
+          - paragraph [ref=e203]: Quote Preview
+          - generic [ref=e291]:
+            - generic [ref=e293]:
+              - term [ref=e294]: Bid
+              - definition [ref=e295]: "157.635255"
+            - generic [ref=e297]:
+              - term [ref=e298]: Ask
+              - definition [ref=e299]: "157.950841"
+            - generic [ref=e301]:
+              - term [ref=e302]: Last
+              - definition [ref=e303]: "157.793048"
+            - generic [ref=e305]:
+              - term [ref=e306]: Timestamp
+              - definition [ref=e307]: 9/24/2026, 12:54:17 AM
+        - alert [ref=e308]:
+          - img [ref=e310]
+          - generic [ref=e312]: Order accepted
+          - generic [ref=e313]: stocks AAPL BUY
+        - table "Terminal activity table" [ref=e222]:
+          - rowgroup [ref=e223]:
+            - row "# Type Venue Symbol Side Status Details Reason" [ref=e224]:
+              - columnheader "#" [ref=e225]
+              - columnheader "Type" [ref=e226]
+              - columnheader "Venue" [ref=e227]
+              - columnheader "Symbol" [ref=e228]
+              - columnheader "Side" [ref=e229]
+              - columnheader "Status" [ref=e230]
+              - columnheader "Details" [ref=e231]
+              - columnheader "Reason" [ref=e232]
+          - rowgroup [ref=e233]:
+            - row "1 order stocks AAPL BUY rejected Notional 100 INVALID_ORDER_SIZE" [ref=e234]:
+              - cell "1" [ref=e235]
+              - cell "order" [ref=e236]
+              - cell "stocks" [ref=e237]
+              - cell "AAPL" [ref=e238]
+              - cell "BUY" [ref=e239]
+              - cell "rejected" [ref=e240]
+              - cell "Notional 100" [ref=e241]
+              - cell "INVALID_ORDER_SIZE" [ref=e242]
+            - row "2 order stocks AAPL BUY accepted Notional 157.79 --" [ref=e243]:
+              - cell "2" [ref=e244]
+              - cell "order" [ref=e245]
+              - cell "stocks" [ref=e246]
+              - cell "AAPL" [ref=e247]
+              - cell "BUY" [ref=e248]
+              - cell "accepted" [ref=e249]
+              - cell "Notional 157.79" [ref=e250]
+              - cell "--" [ref=e251]
+            - row "3 order stocks AAPL BUY accepted Notional 157.79 --" [ref=e314]:
+              - cell "3" [ref=e315]
+              - cell "order" [ref=e316]
+              - cell "stocks" [ref=e255]
+              - cell "AAPL" [ref=e256]
+              - cell "BUY" [ref=e257]
+              - cell "accepted" [ref=e317]
+              - cell "Notional 157.79" [ref=e318]
+              - cell "--" [ref=e260]
+            - row "1 fill-partial stocks AAPL BUY filled Qty 0.38525 @ 157.85402 --" [ref=e319]:
+              - cell "1" [ref=e320]
+              - cell "fill-partial" [ref=e321]
+              - cell "stocks" [ref=e264]
+              - cell "AAPL" [ref=e265]
+              - cell "BUY" [ref=e266]
+              - cell "filled" [ref=e267]
+              - cell "Qty 0.38525 @ 157.85402" [ref=e322]
+              - cell "--" [ref=e269]
+            - row "2 fill-complete stocks AAPL BUY filled Qty 1 @ 157.681972 --" [ref=e323]:
+              - cell "2" [ref=e324]
+              - cell "fill-complete" [ref=e325]
+              - cell "stocks" [ref=e326]
+              - cell "AAPL" [ref=e327]
+              - cell "BUY" [ref=e328]
+              - cell "filled" [ref=e329]
+              - cell "Qty 1 @ 157.681972" [ref=e330]
+              - cell "--" [ref=e331]
+            - row "3 fill-complete stocks AAPL BUY filled Qty 1 @ 157.492026 --" [ref=e332]:
+              - cell "3" [ref=e333]
+              - cell "fill-complete" [ref=e334]
+              - cell "stocks" [ref=e335]
+              - cell "AAPL" [ref=e336]
+              - cell "BUY" [ref=e337]
+              - cell "filled" [ref=e338]
+              - cell "Qty 1 @ 157.492026" [ref=e339]
+              - cell "--" [ref=e340]
+        - paragraph [ref=e271]: Market orders only. Advanced order types are intentionally out of scope for this MVP.
+  - generic:
+    - region "Notifications-top"
+    - region "Notifications-top-left"
+    - region "Notifications-top-right"
+    - region "Notifications-bottom-left"
+    - region "Notifications-bottom"
+    - region "Notifications-bottom-right"

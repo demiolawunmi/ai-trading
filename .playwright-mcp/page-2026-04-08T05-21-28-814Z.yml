@@ -1,0 +1,51 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - complementary [ref=e4]:
+      - heading "Paper Terminal" [level=1] [ref=e5]
+      - paragraph [ref=e6]: Local-first simulation shell
+      - separator [ref=e7]
+      - navigation "Primary" [ref=e8]:
+        - link "Terminal" [ref=e9] [cursor=pointer]:
+          - /url: "#/terminal"
+        - link "Portfolio" [ref=e10] [cursor=pointer]:
+          - /url: "#/portfolio"
+        - link "Strategies" [ref=e11] [cursor=pointer]:
+          - /url: "#/strategies"
+        - link "Metrics" [ref=e12] [cursor=pointer]:
+          - /url: "#/metrics"
+        - link "Connect" [ref=e13] [cursor=pointer]:
+          - /url: "#/connect"
+    - main [ref=e14]:
+      - status [ref=e116]:
+        - paragraph [ref=e117]: Worker connected
+        - paragraph [ref=e118]: Checked 1:21:22 AM
+      - generic [ref=e587]:
+        - heading "Portfolio" [level=2] [ref=e588]
+        - paragraph [ref=e589]: Edit cash and buying power, then save through the worker-backed portfolio API.
+        - paragraph [ref=e590]: "Base Currency: USD"
+        - generic [ref=e591]:
+          - group [ref=e592]:
+            - generic [ref=e593]: Cash
+            - spinbutton "Cash" [ref=e594]: "100000"
+          - group [ref=e595]:
+            - generic [ref=e596]: Buying Power
+            - spinbutton "Buying Power" [ref=e597]: "100000"
+        - button "Save Portfolio" [ref=e599] [cursor=pointer]
+        - table "Portfolio holdings table" [ref=e601]:
+          - rowgroup [ref=e602]:
+            - row "Venue Symbol Quantity Average Cost" [ref=e603]:
+              - columnheader "Venue" [ref=e604]
+              - columnheader "Symbol" [ref=e605]
+              - columnheader "Quantity" [ref=e606]
+              - columnheader "Average Cost" [ref=e607]
+          - rowgroup [ref=e608]:
+            - row "No rows yet." [ref=e609]:
+              - cell "No rows yet." [ref=e610]:
+                - paragraph [ref=e611]: No rows yet.
+  - generic:
+    - region "Notifications-top"
+    - region "Notifications-top-left"
+    - region "Notifications-top-right"
+    - region "Notifications-bottom-left"
+    - region "Notifications-bottom"
+    - region "Notifications-bottom-right"

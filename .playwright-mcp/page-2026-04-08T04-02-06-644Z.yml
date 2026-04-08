@@ -1,0 +1,51 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - complementary [ref=e4]:
+      - heading "Paper Terminal" [level=1] [ref=e5]
+      - paragraph [ref=e6]: Local-first simulation shell
+      - separator [ref=e7]
+      - navigation "Primary" [ref=e8]:
+        - link "Terminal" [ref=e9] [cursor=pointer]:
+          - /url: "#/terminal"
+        - link "Portfolio" [ref=e10] [cursor=pointer]:
+          - /url: "#/portfolio"
+        - link "Strategies" [ref=e11] [cursor=pointer]:
+          - /url: "#/strategies"
+        - link "Metrics" [ref=e12] [cursor=pointer]:
+          - /url: "#/metrics"
+        - link "Connect" [ref=e13] [cursor=pointer]:
+          - /url: "#/connect"
+    - main [ref=e14]:
+      - alert [ref=e16]:
+        - paragraph [ref=e17]: Backend disconnected
+        - paragraph [ref=e18]: "Worker API is unavailable at `http://localhost:4000`. Start the worker to enable trading features."
+        - paragraph [ref=e19]: Status not checked yet
+      - generic [ref=e21]:
+        - heading "Terminal" [level=2] [ref=e22]
+        - paragraph [ref=e23]: Market order workflow is implemented in Task 8. This route provides shell layout and accessible form primitives.
+        - generic [ref=e24]:
+          - group [ref=e25]:
+            - generic [ref=e26]: Symbol
+            - textbox "Symbol" [ref=e27]:
+              - /placeholder: AAPL
+          - group [ref=e28]:
+            - generic [ref=e29]: Order Size
+            - spinbutton "Order Size" [ref=e30]
+        - table "Terminal activity table" [ref=e32]:
+          - rowgroup [ref=e33]:
+            - row "Venue Symbol Side Status" [ref=e34]:
+              - columnheader "Venue" [ref=e35]
+              - columnheader "Symbol" [ref=e36]
+              - columnheader "Side" [ref=e37]
+              - columnheader "Status" [ref=e38]
+          - rowgroup [ref=e39]:
+            - row "No rows yet." [ref=e40]:
+              - cell "No rows yet." [ref=e41]:
+                - paragraph [ref=e42]: No rows yet.
+  - generic:
+    - region "Notifications-top"
+    - region "Notifications-top-left"
+    - region "Notifications-top-right"
+    - region "Notifications-bottom-left"
+    - region "Notifications-bottom"
+    - region "Notifications-bottom-right"

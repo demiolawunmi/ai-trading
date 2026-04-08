@@ -1,0 +1,4 @@
+[     397ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://127.0.0.1:4173/node_modules/.vite/deps/chunk-V5RXUL3I.js?v=cec510e9:21548
+[     478ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:4173/favicon.ico:0
+[    9600ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://127.0.0.1:4173/node_modules/.vite/deps/chunk-V5RXUL3I.js?v=cec510e9:21548
+[   25485ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://127.0.0.1:4173/#/connect:0
