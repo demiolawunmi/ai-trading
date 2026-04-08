@@ -1,0 +1,125 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - complementary [ref=e4]:
+      - heading "Paper Terminal" [level=1] [ref=e5]
+      - paragraph [ref=e6]: Local-first simulation shell
+      - separator [ref=e7]
+      - navigation "Primary" [ref=e8]:
+        - link "Terminal" [ref=e9] [cursor=pointer]:
+          - /url: "#/terminal"
+        - link "Portfolio" [ref=e10] [cursor=pointer]:
+          - /url: "#/portfolio"
+        - link "Strategies" [ref=e11] [cursor=pointer]:
+          - /url: "#/strategies"
+        - link "Metrics" [ref=e12] [cursor=pointer]:
+          - /url: "#/metrics"
+        - link "Connect" [ref=e13] [cursor=pointer]:
+          - /url: "#/connect"
+    - main [ref=e14]:
+      - alert [ref=e16]:
+        - paragraph [ref=e17]: Backend disconnected
+        - paragraph [ref=e18]: "Worker API is unavailable at `http://localhost:4000`. Start the worker to enable trading features."
+        - paragraph [ref=e19]: Status not checked yet
+      - generic [ref=e21]:
+        - heading "Connect" [level=2] [ref=e22]
+        - alert [ref=e23]:
+          - img [ref=e25]
+          - generic [ref=e27]: Credentials are stored locally in this browser with basic obfuscation only. This is not production-grade security.
+        - paragraph [ref=e28]: Save, edit, and delete credentials per venue, then run a connection check against worker APIs.
+        - button "Check Connections" [ref=e30] [cursor=pointer]
+        - table "Connection status table" [ref=e32]:
+          - rowgroup [ref=e33]:
+            - row "Venue Config Status Updated" [ref=e34]:
+              - columnheader "Venue" [ref=e35]
+              - columnheader "Config" [ref=e36]
+              - columnheader "Status" [ref=e37]
+              - columnheader "Updated" [ref=e38]
+          - rowgroup [ref=e39]:
+            - row "Stocks Not configured disconnected --" [ref=e40]:
+              - cell "Stocks" [ref=e41]
+              - cell "Not configured" [ref=e42]
+              - cell "disconnected" [ref=e43]
+              - cell "--" [ref=e44]
+            - row "Crypto Not configured disconnected --" [ref=e45]:
+              - cell "Crypto" [ref=e46]
+              - cell "Not configured" [ref=e47]
+              - cell "disconnected" [ref=e48]
+              - cell "--" [ref=e49]
+            - row "Jupiter Not configured disconnected --" [ref=e50]:
+              - cell "Jupiter" [ref=e51]
+              - cell "Not configured" [ref=e52]
+              - cell "disconnected" [ref=e53]
+              - cell "--" [ref=e54]
+            - row "Polymarket Not configured disconnected --" [ref=e55]:
+              - cell "Polymarket" [ref=e56]
+              - cell "Not configured" [ref=e57]
+              - cell "disconnected" [ref=e58]
+              - cell "--" [ref=e59]
+        - generic [ref=e60]:
+          - generic [ref=e61]:
+            - generic [ref=e62]:
+              - paragraph [ref=e63]: Stocks
+              - generic [ref=e64]: disconnected
+            - generic [ref=e65]:
+              - group [ref=e66]:
+                - generic [ref=e67]: API Key
+                - textbox "API Key" [ref=e68]:
+                  - /placeholder: stocks-api-key
+              - group [ref=e69]:
+                - generic [ref=e70]: API Secret
+                - textbox "API Secret" [ref=e71]:
+                  - /placeholder: stocks-api-secret
+              - button "Save Locally" [ref=e73] [cursor=pointer]
+          - generic [ref=e74]:
+            - generic [ref=e75]:
+              - paragraph [ref=e76]: Crypto
+              - generic [ref=e77]: disconnected
+            - generic [ref=e78]:
+              - group [ref=e79]:
+                - generic [ref=e80]: API Key
+                - textbox "API Key" [ref=e81]:
+                  - /placeholder: crypto-api-key
+              - group [ref=e82]:
+                - generic [ref=e83]: API Secret
+                - textbox "API Secret" [ref=e84]:
+                  - /placeholder: crypto-api-secret
+              - button "Save Locally" [ref=e86] [cursor=pointer]
+          - generic [ref=e87]:
+            - generic [ref=e88]:
+              - paragraph [ref=e89]: Jupiter
+              - generic [ref=e90]: disconnected
+            - generic [ref=e91]:
+              - group [ref=e92]:
+                - generic [ref=e93]: Wallet Address
+                - textbox "Wallet Address" [ref=e94]:
+                  - /placeholder: wallet-address
+              - group [ref=e95]:
+                - generic [ref=e96]: Private Key
+                - textbox "Private Key" [ref=e97]:
+                  - /placeholder: wallet-private-key
+              - button "Save Locally" [ref=e99] [cursor=pointer]
+          - generic [ref=e100]:
+            - generic [ref=e101]:
+              - paragraph [ref=e102]: Polymarket
+              - generic [ref=e103]: disconnected
+            - generic [ref=e104]:
+              - group [ref=e105]:
+                - generic [ref=e106]: API Key
+                - textbox "API Key" [ref=e107]:
+                  - /placeholder: polymarket-api-key
+              - group [ref=e108]:
+                - generic [ref=e109]: API Secret
+                - textbox "API Secret" [ref=e110]:
+                  - /placeholder: polymarket-api-secret
+              - group [ref=e111]:
+                - generic [ref=e112]: Passphrase
+                - textbox "Passphrase" [ref=e113]:
+                  - /placeholder: polymarket-passphrase
+              - button "Save Locally" [ref=e115] [cursor=pointer]
+  - generic:
+    - region "Notifications-top"
+    - region "Notifications-top-left"
+    - region "Notifications-top-right"
+    - region "Notifications-bottom-left"
+    - region "Notifications-bottom"
+    - region "Notifications-bottom-right"

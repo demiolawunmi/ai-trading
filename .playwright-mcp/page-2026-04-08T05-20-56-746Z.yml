@@ -1,0 +1,92 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - complementary [ref=e4]:
+      - heading "Paper Terminal" [level=1] [ref=e5]
+      - paragraph [ref=e6]: Local-first simulation shell
+      - separator [ref=e7]
+      - navigation "Primary" [ref=e8]:
+        - link "Terminal" [ref=e9] [cursor=pointer]:
+          - /url: "#/terminal"
+        - link "Portfolio" [ref=e10] [cursor=pointer]:
+          - /url: "#/portfolio"
+        - link "Strategies" [ref=e11] [cursor=pointer]:
+          - /url: "#/strategies"
+        - link "Metrics" [ref=e12] [cursor=pointer]:
+          - /url: "#/metrics"
+        - link "Connect" [ref=e13] [cursor=pointer]:
+          - /url: "#/connect"
+    - main [ref=e14]:
+      - status [ref=e116]:
+        - paragraph [ref=e117]: Worker connected
+        - paragraph [ref=e118]: Checked 1:20:52 AM
+      - generic [ref=e154]:
+        - heading "Terminal" [level=2] [ref=e155]
+        - paragraph [ref=e156]: Submit simulated market orders and review quote + fill activity from worker-backed APIs.
+        - generic [ref=e157]:
+          - group [ref=e158]:
+            - generic [ref=e159]: Venue
+            - generic [ref=e160]:
+              - combobox "Venue" [ref=e161]:
+                - option "stocks" [selected]
+                - option "crypto"
+                - option "jupiter"
+                - option "polymarket"
+              - generic:
+                - img
+          - group [ref=e162]:
+            - generic [ref=e163]: Symbol
+            - textbox "Symbol" [ref=e164]:
+              - /placeholder: AAPL
+              - text: AAPL
+          - group [ref=e165]:
+            - generic [ref=e166]: Side
+            - radiogroup "Side" [ref=e167]:
+              - generic [ref=e168]:
+                - generic [ref=e169] [cursor=pointer]:
+                  - radio "Buy" [checked] [ref=e170]
+                  - generic [ref=e172]: Buy
+                - generic [ref=e173] [cursor=pointer]:
+                  - radio "Sell" [ref=e174]
+                  - generic [ref=e176]: Sell
+          - group [ref=e177]:
+            - generic [ref=e178]: Amount Type
+            - radiogroup "Amount Type" [ref=e179]:
+              - generic [ref=e180]:
+                - generic [ref=e181] [cursor=pointer]:
+                  - radio "Quantity" [ref=e182]
+                  - generic [ref=e184]: Quantity
+                - generic [ref=e185] [cursor=pointer]:
+                  - radio "Notional" [checked] [ref=e186]
+                  - generic [ref=e188]: Notional
+          - group [ref=e189]:
+            - generic [ref=e190]: Notional
+            - spinbutton "Notional" [ref=e191]: "100"
+        - generic [ref=e192]:
+          - button "Preview Quote" [ref=e193] [cursor=pointer]
+          - button "Submit Market Order" [ref=e194] [cursor=pointer]
+        - generic [ref=e195]:
+          - paragraph [ref=e196]: Quote Preview
+          - paragraph [ref=e197]: No quote loaded yet.
+        - table "Terminal activity table" [ref=e199]:
+          - rowgroup [ref=e200]:
+            - row "# Type Venue Symbol Side Status Details Reason" [ref=e201]:
+              - columnheader "#" [ref=e202]
+              - columnheader "Type" [ref=e203]
+              - columnheader "Venue" [ref=e204]
+              - columnheader "Symbol" [ref=e205]
+              - columnheader "Side" [ref=e206]
+              - columnheader "Status" [ref=e207]
+              - columnheader "Details" [ref=e208]
+              - columnheader "Reason" [ref=e209]
+          - rowgroup [ref=e210]:
+            - row "No rows yet." [ref=e211]:
+              - cell "No rows yet." [ref=e212]:
+                - paragraph [ref=e213]: No rows yet.
+        - paragraph [ref=e215]: Market orders only. Advanced order types are intentionally out of scope for this MVP.
+  - generic:
+    - region "Notifications-top"
+    - region "Notifications-top-left"
+    - region "Notifications-top-right"
+    - region "Notifications-bottom-left"
+    - region "Notifications-bottom"
+    - region "Notifications-bottom-right"

@@ -1,0 +1,317 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - complementary [ref=e4]:
+      - heading "Paper Terminal" [level=1] [ref=e5]
+      - paragraph [ref=e6]: Local-first simulation shell
+      - separator [ref=e7]
+      - navigation "Primary" [ref=e8]:
+        - link "Terminal" [ref=e9] [cursor=pointer]:
+          - /url: "#/terminal"
+        - link "Portfolio" [ref=e10] [cursor=pointer]:
+          - /url: "#/portfolio"
+        - link "Strategies" [ref=e11] [cursor=pointer]:
+          - /url: "#/strategies"
+        - link "Metrics" [ref=e12] [cursor=pointer]:
+          - /url: "#/metrics"
+        - link "Connect" [ref=e13] [cursor=pointer]:
+          - /url: "#/connect"
+    - main [ref=e14]:
+      - status [ref=e116]:
+        - paragraph [ref=e117]: Worker connected
+        - paragraph [ref=e118]: Checked 1:21:02 AM
+      - generic [ref=e154]:
+        - heading "Terminal" [level=2] [ref=e155]
+        - paragraph [ref=e156]: Submit simulated market orders and review quote + fill activity from worker-backed APIs.
+        - generic [ref=e157]:
+          - group [ref=e158]:
+            - generic [ref=e159]: Venue
+            - generic [ref=e160]:
+              - combobox "Venue" [ref=e161]:
+                - option "stocks" [selected]
+                - option "crypto"
+                - option "jupiter"
+                - option "polymarket"
+              - generic:
+                - img
+          - group [ref=e162]:
+            - generic [ref=e163]: Symbol
+            - textbox "Symbol" [ref=e164]:
+              - /placeholder: AAPL
+              - text: AAPL
+          - group [ref=e165]:
+            - generic [ref=e166]: Side
+            - radiogroup "Side" [ref=e167]:
+              - generic [ref=e168]:
+                - generic [ref=e169] [cursor=pointer]:
+                  - radio "Buy" [checked] [ref=e170]
+                  - generic [ref=e172]: Buy
+                - generic [ref=e173] [cursor=pointer]:
+                  - radio "Sell" [ref=e174]
+                  - generic [ref=e176]: Sell
+          - group [ref=e177]:
+            - generic [ref=e178]: Amount Type
+            - radiogroup "Amount Type" [ref=e179]:
+              - generic [ref=e180]:
+                - generic [ref=e181] [cursor=pointer]:
+                  - radio "Quantity" [ref=e182]
+                  - generic [ref=e184]: Quantity
+                - generic [ref=e185] [cursor=pointer]:
+                  - radio "Notional" [checked] [ref=e186]
+                  - generic [ref=e188]: Notional
+          - group [ref=e189]:
+            - generic [ref=e190]: Notional
+            - spinbutton "Notional" [ref=e191]: "100"
+        - generic [ref=e192]:
+          - button "Preview Quote" [ref=e193] [cursor=pointer]
+          - button "Submit Market Order" [ref=e194] [cursor=pointer]
+        - generic [ref=e195]:
+          - paragraph [ref=e196]: Quote Preview
+          - generic [ref=e216]:
+            - generic [ref=e218]:
+              - term [ref=e219]: Bid
+              - definition [ref=e220]: "160.606573"
+            - generic [ref=e222]:
+              - term [ref=e223]: Ask
+              - definition [ref=e224]: "160.928107"
+            - generic [ref=e226]:
+              - term [ref=e227]: Last
+              - definition [ref=e228]: "160.76734"
+            - generic [ref=e230]:
+              - term [ref=e231]: Timestamp
+              - definition [ref=e232]: 9/4/2026, 11:50:34 AM
+        - table "Terminal activity table" [ref=e199]:
+          - rowgroup [ref=e200]:
+            - row "# Type Venue Symbol Side Status Details Reason" [ref=e201]:
+              - columnheader "#" [ref=e202]
+              - columnheader "Type" [ref=e203]
+              - columnheader "Venue" [ref=e204]
+              - columnheader "Symbol" [ref=e205]
+              - columnheader "Side" [ref=e206]
+              - columnheader "Status" [ref=e207]
+              - columnheader "Details" [ref=e208]
+              - columnheader "Reason" [ref=e209]
+          - rowgroup [ref=e210]:
+            - row "1 order stocks AAPL BUY accepted Notional 1,525.07 --" [ref=e233]:
+              - cell "1" [ref=e234]
+              - cell "order" [ref=e235]
+              - cell "stocks" [ref=e236]
+              - cell "AAPL" [ref=e237]
+              - cell "BUY" [ref=e238]
+              - cell "accepted" [ref=e239]
+              - cell "Notional 1,525.07" [ref=e240]
+              - cell "--" [ref=e241]
+            - row "2 order stocks AAPL SELL accepted Notional 541.02 --" [ref=e242]:
+              - cell "2" [ref=e243]
+              - cell "order" [ref=e244]
+              - cell "stocks" [ref=e245]
+              - cell "AAPL" [ref=e246]
+              - cell "SELL" [ref=e247]
+              - cell "accepted" [ref=e248]
+              - cell "Notional 541.02" [ref=e249]
+              - cell "--" [ref=e250]
+            - row "3 order stocks AAPL BUY accepted Notional 100 --" [ref=e251]:
+              - cell "3" [ref=e252]
+              - cell "order" [ref=e253]
+              - cell "stocks" [ref=e254]
+              - cell "AAPL" [ref=e255]
+              - cell "BUY" [ref=e256]
+              - cell "accepted" [ref=e257]
+              - cell "Notional 100" [ref=e258]
+              - cell "--" [ref=e259]
+            - row "4 order stocks AAPL BUY accepted Notional 100 --" [ref=e260]:
+              - cell "4" [ref=e261]
+              - cell "order" [ref=e262]
+              - cell "stocks" [ref=e263]
+              - cell "AAPL" [ref=e264]
+              - cell "BUY" [ref=e265]
+              - cell "accepted" [ref=e266]
+              - cell "Notional 100" [ref=e267]
+              - cell "--" [ref=e268]
+            - row "5 order stocks AAPL BUY accepted Notional 100 --" [ref=e269]:
+              - cell "5" [ref=e270]
+              - cell "order" [ref=e271]
+              - cell "stocks" [ref=e272]
+              - cell "AAPL" [ref=e273]
+              - cell "BUY" [ref=e274]
+              - cell "accepted" [ref=e275]
+              - cell "Notional 100" [ref=e276]
+              - cell "--" [ref=e277]
+            - row "6 order stocks AAPL BUY accepted Notional 100 --" [ref=e278]:
+              - cell "6" [ref=e279]
+              - cell "order" [ref=e280]
+              - cell "stocks" [ref=e281]
+              - cell "AAPL" [ref=e282]
+              - cell "BUY" [ref=e283]
+              - cell "accepted" [ref=e284]
+              - cell "Notional 100" [ref=e285]
+              - cell "--" [ref=e286]
+            - row "7 order stocks AAPL BUY accepted Notional 100 --" [ref=e287]:
+              - cell "7" [ref=e288]
+              - cell "order" [ref=e289]
+              - cell "stocks" [ref=e290]
+              - cell "AAPL" [ref=e291]
+              - cell "BUY" [ref=e292]
+              - cell "accepted" [ref=e293]
+              - cell "Notional 100" [ref=e294]
+              - cell "--" [ref=e295]
+            - row "8 order stocks AAPL BUY accepted Notional 100 --" [ref=e296]:
+              - cell "8" [ref=e297]
+              - cell "order" [ref=e298]
+              - cell "stocks" [ref=e299]
+              - cell "AAPL" [ref=e300]
+              - cell "BUY" [ref=e301]
+              - cell "accepted" [ref=e302]
+              - cell "Notional 100" [ref=e303]
+              - cell "--" [ref=e304]
+            - row "9 order stocks AAPL BUY accepted Notional 100 --" [ref=e305]:
+              - cell "9" [ref=e306]
+              - cell "order" [ref=e307]
+              - cell "stocks" [ref=e308]
+              - cell "AAPL" [ref=e309]
+              - cell "BUY" [ref=e310]
+              - cell "accepted" [ref=e311]
+              - cell "Notional 100" [ref=e312]
+              - cell "--" [ref=e313]
+            - row "10 order stocks AAPL BUY accepted Notional 100 --" [ref=e314]:
+              - cell "10" [ref=e315]
+              - cell "order" [ref=e316]
+              - cell "stocks" [ref=e317]
+              - cell "AAPL" [ref=e318]
+              - cell "BUY" [ref=e319]
+              - cell "accepted" [ref=e320]
+              - cell "Notional 100" [ref=e321]
+              - cell "--" [ref=e322]
+            - row "1 fill-partial stocks AAPL BUY filled Qty 3.8525 @ 152.566081 --" [ref=e323]:
+              - cell "1" [ref=e324]
+              - cell "fill-partial" [ref=e325]
+              - cell "stocks" [ref=e326]
+              - cell "AAPL" [ref=e327]
+              - cell "BUY" [ref=e328]
+              - cell "filled" [ref=e329]
+              - cell "Qty 3.8525 @ 152.566081" [ref=e330]
+              - cell "--" [ref=e331]
+            - row "2 fill-complete stocks AAPL BUY filled Qty 10 @ 152.399796 --" [ref=e332]:
+              - cell "2" [ref=e333]
+              - cell "fill-complete" [ref=e334]
+              - cell "stocks" [ref=e335]
+              - cell "AAPL" [ref=e336]
+              - cell "BUY" [ref=e337]
+              - cell "filled" [ref=e338]
+              - cell "Qty 10 @ 152.399796" [ref=e339]
+              - cell "--" [ref=e340]
+            - row "3 fill-complete stocks AAPL SELL filled Qty 4 @ 134.997604 --" [ref=e341]:
+              - cell "3" [ref=e342]
+              - cell "fill-complete" [ref=e343]
+              - cell "stocks" [ref=e344]
+              - cell "AAPL" [ref=e345]
+              - cell "SELL" [ref=e346]
+              - cell "filled" [ref=e347]
+              - cell "Qty 4 @ 134.997604" [ref=e348]
+              - cell "--" [ref=e349]
+            - row "4 fill-complete stocks AAPL BUY filled Qty 1 @ 161.051257 --" [ref=e350]:
+              - cell "4" [ref=e351]
+              - cell "fill-complete" [ref=e352]
+              - cell "stocks" [ref=e353]
+              - cell "AAPL" [ref=e354]
+              - cell "BUY" [ref=e355]
+              - cell "filled" [ref=e356]
+              - cell "Qty 1 @ 161.051257" [ref=e357]
+              - cell "--" [ref=e358]
+            - row "5 fill-complete stocks AAPL BUY filled Qty 1 @ 161.057892 --" [ref=e359]:
+              - cell "5" [ref=e360]
+              - cell "fill-complete" [ref=e361]
+              - cell "stocks" [ref=e362]
+              - cell "AAPL" [ref=e363]
+              - cell "BUY" [ref=e364]
+              - cell "filled" [ref=e365]
+              - cell "Qty 1 @ 161.057892" [ref=e366]
+              - cell "--" [ref=e367]
+            - row "6 fill-partial stocks AAPL BUY filled Qty 0.406084 @ 161.129137 --" [ref=e368]:
+              - cell "6" [ref=e369]
+              - cell "fill-partial" [ref=e370]
+              - cell "stocks" [ref=e371]
+              - cell "AAPL" [ref=e372]
+              - cell "BUY" [ref=e373]
+              - cell "filled" [ref=e374]
+              - cell "Qty 0.406084 @ 161.129137" [ref=e375]
+              - cell "--" [ref=e376]
+            - row "7 fill-complete stocks AAPL BUY filled Qty 1 @ 161.116948 --" [ref=e377]:
+              - cell "7" [ref=e378]
+              - cell "fill-complete" [ref=e379]
+              - cell "stocks" [ref=e380]
+              - cell "AAPL" [ref=e381]
+              - cell "BUY" [ref=e382]
+              - cell "filled" [ref=e383]
+              - cell "Qty 1 @ 161.116948" [ref=e384]
+              - cell "--" [ref=e385]
+            - row "8 fill-partial stocks AAPL BUY filled Qty 0.570034 @ 160.573589 --" [ref=e386]:
+              - cell "8" [ref=e387]
+              - cell "fill-partial" [ref=e388]
+              - cell "stocks" [ref=e389]
+              - cell "AAPL" [ref=e390]
+              - cell "BUY" [ref=e391]
+              - cell "filled" [ref=e392]
+              - cell "Qty 0.570034 @ 160.573589" [ref=e393]
+              - cell "--" [ref=e394]
+            - row "9 fill-complete stocks AAPL BUY filled Qty 1 @ 160.810048 --" [ref=e395]:
+              - cell "9" [ref=e396]
+              - cell "fill-complete" [ref=e397]
+              - cell "stocks" [ref=e398]
+              - cell "AAPL" [ref=e399]
+              - cell "BUY" [ref=e400]
+              - cell "filled" [ref=e401]
+              - cell "Qty 1 @ 160.810048" [ref=e402]
+              - cell "--" [ref=e403]
+            - row "10 fill-complete stocks AAPL BUY filled Qty 1 @ 160.740751 --" [ref=e404]:
+              - cell "10" [ref=e405]
+              - cell "fill-complete" [ref=e406]
+              - cell "stocks" [ref=e407]
+              - cell "AAPL" [ref=e408]
+              - cell "BUY" [ref=e409]
+              - cell "filled" [ref=e410]
+              - cell "Qty 1 @ 160.740751" [ref=e411]
+              - cell "--" [ref=e412]
+            - row "11 fill-partial stocks AAPL BUY filled Qty 0.564916 @ 161.032574 --" [ref=e413]:
+              - cell "11" [ref=e414]
+              - cell "fill-partial" [ref=e415]
+              - cell "stocks" [ref=e416]
+              - cell "AAPL" [ref=e417]
+              - cell "BUY" [ref=e418]
+              - cell "filled" [ref=e419]
+              - cell "Qty 0.564916 @ 161.032574" [ref=e420]
+              - cell "--" [ref=e421]
+            - row "12 fill-complete stocks AAPL BUY filled Qty 1 @ 161.03795 --" [ref=e422]:
+              - cell "12" [ref=e423]
+              - cell "fill-complete" [ref=e424]
+              - cell "stocks" [ref=e425]
+              - cell "AAPL" [ref=e426]
+              - cell "BUY" [ref=e427]
+              - cell "filled" [ref=e428]
+              - cell "Qty 1 @ 161.03795" [ref=e429]
+              - cell "--" [ref=e430]
+            - row "13 fill-complete stocks AAPL BUY filled Qty 1 @ 160.925211 --" [ref=e431]:
+              - cell "13" [ref=e432]
+              - cell "fill-complete" [ref=e433]
+              - cell "stocks" [ref=e434]
+              - cell "AAPL" [ref=e435]
+              - cell "BUY" [ref=e436]
+              - cell "filled" [ref=e437]
+              - cell "Qty 1 @ 160.925211" [ref=e438]
+              - cell "--" [ref=e439]
+            - row "14 fill-complete stocks AAPL BUY filled Qty 1 @ 161.161451 --" [ref=e440]:
+              - cell "14" [ref=e441]
+              - cell "fill-complete" [ref=e442]
+              - cell "stocks" [ref=e443]
+              - cell "AAPL" [ref=e444]
+              - cell "BUY" [ref=e445]
+              - cell "filled" [ref=e446]
+              - cell "Qty 1 @ 161.161451" [ref=e447]
+              - cell "--" [ref=e448]
+        - paragraph [ref=e215]: Market orders only. Advanced order types are intentionally out of scope for this MVP.
+  - generic:
+    - region "Notifications-top"
+    - region "Notifications-top-left"
+    - region "Notifications-top-right"
+    - region "Notifications-bottom-left"
+    - region "Notifications-bottom"
+    - region "Notifications-bottom-right"

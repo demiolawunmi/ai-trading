@@ -1,0 +1,60 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - complementary [ref=e4]:
+      - heading "Paper Terminal" [level=1] [ref=e5]
+      - paragraph [ref=e6]: Local-first simulation shell
+      - separator [ref=e7]
+      - navigation "Primary" [ref=e8]:
+        - link "Terminal" [ref=e9] [cursor=pointer]:
+          - /url: "#/terminal"
+        - link "Portfolio" [ref=e10] [cursor=pointer]:
+          - /url: "#/portfolio"
+        - link "Strategies" [ref=e11] [cursor=pointer]:
+          - /url: "#/strategies"
+        - link "Metrics" [ref=e12] [cursor=pointer]:
+          - /url: "#/metrics"
+        - link "Connect" [ref=e13] [cursor=pointer]:
+          - /url: "#/connect"
+    - main [ref=e14]:
+      - status [ref=e116]:
+        - paragraph [ref=e117]: Worker connected
+        - paragraph [ref=e118]: Checked 1:21:42 AM
+      - generic [ref=e623]:
+        - heading "Metrics" [level=2] [ref=e624]
+        - paragraph [ref=e625]: Review account-level and strategy-level PnL + risk metrics from deterministic worker analytics.
+        - group [ref=e626]:
+          - generic [ref=e627]: Scope
+          - generic [ref=e628]:
+            - combobox "Scope" [ref=e629]:
+              - option "Account" [selected]
+            - generic:
+              - img
+        - group [ref=e630]:
+          - generic [ref=e631]: Window
+          - generic [ref=e632]:
+            - combobox "Window" [ref=e633]:
+              - option "all" [selected]
+              - option "1h"
+              - option "24h"
+              - option "7d"
+            - generic:
+              - img
+        - generic [ref=e635]:
+          - generic [ref=e637]: Loading...
+          - paragraph [ref=e638]: Loading metrics snapshot from worker...
+        - table "Metrics snapshot table" [ref=e640]:
+          - rowgroup [ref=e641]:
+            - row "Metric Value" [ref=e642]:
+              - columnheader "Metric" [ref=e643]
+              - columnheader "Value" [ref=e644]
+          - rowgroup [ref=e645]:
+            - row "No rows yet." [ref=e646]:
+              - cell "No rows yet." [ref=e647]:
+                - paragraph [ref=e648]: No rows yet.
+  - generic:
+    - region "Notifications-top"
+    - region "Notifications-top-left"
+    - region "Notifications-top-right"
+    - region "Notifications-bottom-left"
+    - region "Notifications-bottom"
+    - region "Notifications-bottom-right"

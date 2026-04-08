@@ -1,0 +1,50 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - complementary [ref=e4]:
+      - heading "Paper Terminal" [level=1] [ref=e5]
+      - paragraph [ref=e6]: Local-first simulation shell
+      - separator [ref=e7]
+      - navigation "Primary" [ref=e8]:
+        - link "Terminal" [ref=e9] [cursor=pointer]:
+          - /url: "#/terminal"
+        - link "Portfolio" [ref=e10] [cursor=pointer]:
+          - /url: "#/portfolio"
+        - link "Strategies" [ref=e11] [cursor=pointer]:
+          - /url: "#/strategies"
+        - link "Metrics" [ref=e12] [cursor=pointer]:
+          - /url: "#/metrics"
+        - link "Connect" [ref=e13] [cursor=pointer]:
+          - /url: "#/connect"
+    - main [ref=e14]:
+      - status [ref=e16]:
+        - paragraph [ref=e17]: Worker connected
+        - paragraph [ref=e18]: Checked 12:04:19 AM
+      - generic [ref=e20]:
+        - heading "Terminal" [level=2] [ref=e21]
+        - paragraph [ref=e22]: Market order workflow is implemented in Task 8. This route provides shell layout and accessible form primitives.
+        - generic [ref=e23]:
+          - group [ref=e24]:
+            - generic [ref=e25]: Symbol
+            - textbox "Symbol" [ref=e26]:
+              - /placeholder: AAPL
+          - group [ref=e27]:
+            - generic [ref=e28]: Order Size
+            - spinbutton "Order Size" [ref=e29]
+        - table "Terminal activity table" [ref=e31]:
+          - rowgroup [ref=e32]:
+            - row "Venue Symbol Side Status" [ref=e33]:
+              - columnheader "Venue" [ref=e34]
+              - columnheader "Symbol" [ref=e35]
+              - columnheader "Side" [ref=e36]
+              - columnheader "Status" [ref=e37]
+          - rowgroup [ref=e38]:
+            - row "No rows yet." [ref=e39]:
+              - cell "No rows yet." [ref=e40]:
+                - paragraph [ref=e41]: No rows yet.
+  - generic:
+    - region "Notifications-top"
+    - region "Notifications-top-left"
+    - region "Notifications-top-right"
+    - region "Notifications-bottom-left"
+    - region "Notifications-bottom"
+    - region "Notifications-bottom-right"
