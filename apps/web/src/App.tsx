@@ -12,9 +12,9 @@ import {
   Flex,
   Heading,
   HStack,
-  IconButton,
   Link,
   Text,
+  IconButton,
   useColorMode,
   useDisclosure,
   VStack,
@@ -27,34 +27,15 @@ import { MetricsPage } from './pages/MetricsPage'
 import { PortfolioPage } from './pages/PortfolioPage'
 import { StrategiesPage } from './pages/StrategiesPage'
 import { TerminalPage } from './pages/TerminalPage'
+import { TERMINAL_VENUES, parseAppRoute, type AppRoute } from './routing'
+import { venueLabel } from './venueLabels'
 
-const ROUTES = [
-  { path: '/terminal', label: 'Terminal' },
+const PAGE_LINKS = [
   { path: '/portfolio', label: 'Portfolio' },
   { path: '/strategies', label: 'Strategies' },
   { path: '/metrics', label: 'Metrics' },
   { path: '/connect', label: 'Connect' },
 ] as const
-
-type AppRoutePath = (typeof ROUTES)[number]['path']
-
-const DEFAULT_ROUTE: AppRoutePath = '/terminal'
-
-const parseRouteFromHash = (hash: string): AppRoutePath => {
-  const routeCandidate = hash.replace('#', '')
-  if (ROUTES.some((route) => route.path === routeCandidate)) {
-    return routeCandidate as AppRoutePath
-  }
-  return DEFAULT_ROUTE
-}
-
-const renderRoute = (route: AppRoutePath) => {
-  if (route === '/portfolio') return <PortfolioPage />
-  if (route === '/strategies') return <StrategiesPage />
-  if (route === '/metrics') return <MetricsPage />
-  if (route === '/connect') return <ConnectPage />
-  return <TerminalPage />
-}
 
 const ColorModeToggle = () => {
   const { colorMode, toggleColorMode } = useColorMode()
@@ -70,29 +51,71 @@ const ColorModeToggle = () => {
   )
 }
 
-const NavLinks = ({ route, onNavigate }: { route: AppRoutePath; onNavigate?: () => void }) => (
-  <VStack as="nav" aria-label="Primary" align="stretch" spacing={1}>
-    {ROUTES.map((item) => (
-      <Link
-        key={item.path}
-        href={`#${item.path}`}
-        px={3}
-        py={2}
-        borderRadius="md"
-        bg={route === item.path ? 'brand.navHighlight' : 'transparent'}
-        _hover={{ textDecoration: 'none', bg: 'surface.hover' }}
-        _focusVisible={{ boxShadow: 'outline' }}
-        fontWeight={route === item.path ? 'semibold' : 'medium'}
-        onClick={onNavigate}
-      >
-        {item.label}
-      </Link>
-    ))}
+const TerminalNavLinks = ({ route, onNavigate }: { route: AppRoute; onNavigate?: () => void }) => (
+  <VStack align="stretch" spacing={0}>
+    <Text px={3} fontSize="xs" fontWeight="semibold" color="surface.muted" mb={1}>
+      Terminal
+    </Text>
+    {TERMINAL_VENUES.map((venue) => {
+      const active = route.kind === 'terminal' && route.venue === venue
+      return (
+        <Link
+          key={venue}
+          href={`#/terminal/${venue}`}
+          px={3}
+          py={2}
+          borderRadius="md"
+          bg={active ? 'brand.navHighlight' : 'transparent'}
+          _hover={{ textDecoration: 'none', bg: 'surface.hover' }}
+          _focusVisible={{ boxShadow: 'outline' }}
+          fontWeight={active ? 'semibold' : 'medium'}
+          fontSize="sm"
+          onClick={onNavigate}
+        >
+          {venueLabel(venue)}
+        </Link>
+      )
+    })}
   </VStack>
 )
 
+const PageNavLinks = ({ route, onNavigate }: { route: AppRoute; onNavigate?: () => void }) => (
+  <VStack as="nav" aria-label="Other pages" align="stretch" spacing={1}>
+    {PAGE_LINKS.map((item) => {
+      const active = route.kind === 'page' && route.path === item.path
+      return (
+        <Link
+          key={item.path}
+          href={`#${item.path}`}
+          px={3}
+          py={2}
+          borderRadius="md"
+          bg={active ? 'brand.navHighlight' : 'transparent'}
+          _hover={{ textDecoration: 'none', bg: 'surface.hover' }}
+          _focusVisible={{ boxShadow: 'outline' }}
+          fontWeight={active ? 'semibold' : 'medium'}
+          onClick={onNavigate}
+        >
+          {item.label}
+        </Link>
+      )
+    })}
+  </VStack>
+)
+
+const renderRoute = (route: AppRoute) => {
+  if (route.kind === 'page') {
+    if (route.path === '/portfolio') return <PortfolioPage />
+    if (route.path === '/strategies') return <StrategiesPage />
+    if (route.path === '/metrics') return <MetricsPage />
+    if (route.path === '/connect') return <ConnectPage />
+    return <PortfolioPage />
+  }
+  return <TerminalPage venueFromRoute={route.venue} />
+}
+
 export const App = () => {
-  const [route, setRoute] = useState<AppRoutePath>(() => parseRouteFromHash(window.location.hash))
+  const [route, setRoute] = useState<AppRoute>(() => parseAppRoute(window.location.hash))
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { colorMode } = useColorMode()
 
@@ -104,13 +127,13 @@ export const App = () => {
 
   useEffect(() => {
     if (!window.location.hash) {
-      window.location.hash = DEFAULT_ROUTE
-      setRoute(DEFAULT_ROUTE)
+      window.location.hash = '#/terminal/stocks'
+      setRoute(parseAppRoute('#/terminal/stocks'))
       return
     }
 
     const onHashChange = () => {
-      setRoute(parseRouteFromHash(window.location.hash))
+      setRoute(parseAppRoute(window.location.hash))
     }
 
     window.addEventListener('hashchange', onHashChange)
@@ -165,7 +188,12 @@ export const App = () => {
           </Flex>
           <CurrencySelector id="app-display-currency-sidebar" />
           <Divider borderColor="surface.border" />
-          <NavLinks route={route} />
+          <TerminalNavLinks route={route} />
+          <Divider borderColor="surface.border" />
+          <Text px={3} fontSize="xs" fontWeight="semibold" color="surface.muted">
+            Account & tools
+          </Text>
+          <PageNavLinks route={route} />
         </VStack>
 
         <Drawer isOpen={isOpen} placement="left" onClose={onClose} size="xs">
@@ -184,7 +212,9 @@ export const App = () => {
               </Flex>
               <CurrencySelector id="app-display-currency-drawer" />
               <Divider borderColor="surface.border" my={3} />
-              <NavLinks route={route} onNavigate={onClose} />
+              <TerminalNavLinks route={route} onNavigate={onClose} />
+              <Divider borderColor="surface.border" my={3} />
+              <PageNavLinks route={route} onNavigate={onClose} />
             </DrawerBody>
           </DrawerContent>
         </Drawer>
@@ -199,3 +229,5 @@ export const App = () => {
     </Flex>
   )
 }
+
+export type { AppRoute }

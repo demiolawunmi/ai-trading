@@ -17,7 +17,7 @@ test('connect save -> manual trade -> portfolio update -> metrics update', async
   await expect(page.getByText('Connection check complete using worker status.')).toBeVisible()
   await expect(page.getByRole('cell', { name: 'connected' }).first()).toBeVisible()
 
-  await goTo(page, '#/terminal')
+  await goTo(page, '#/terminal/stocks')
   await page.getByLabel('Venue').selectOption('stocks')
   await page.getByLabel('Symbol').fill('AAPL')
   await page.getByRole('spinbutton', { name: 'Notional' }).fill('100')

@@ -38,6 +38,9 @@ import {
   displayPolymarketMarket,
 } from '@ai-trading/domain'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { TerminalVenueHero } from '../components/terminal/TerminalVenueHero'
+import { TerminalVenueOverview } from '../components/terminal/TerminalVenueOverview'
+import { VenuePriceTracker } from '../components/ui/venue-price-tracker'
 import { SectionCard } from '../components/SectionCard'
 import { ShellDataTable } from '../components/ShellDataTable'
 import { useDisplayCurrency } from '../currencyContext'
@@ -53,8 +56,6 @@ type ApiErrorEnvelope = {
     issues?: Array<{ path?: string; message?: string }>
   }
 }
-
-const VENUES: Venue[] = ['stocks', 'crypto', 'jupiter', 'polymarket']
 
 const SYMBOL_PATTERNS: Record<Venue, RegExp> = {
   stocks: /^[A-Z]{1,5}$/,
@@ -102,9 +103,13 @@ const marketLabelForActivity = (venue: Venue, symbol: string): string => {
   return '—'
 }
 
-export const TerminalPage = () => {
+type TerminalPageProps = {
+  venueFromRoute: Venue
+}
+
+export const TerminalPage = ({ venueFromRoute }: TerminalPageProps) => {
   const { currency, formatCurrency } = useDisplayCurrency()
-  const [venue, setVenue] = useState<Venue>('stocks')
+  const [venue, setVenue] = useState<Venue>(venueFromRoute)
   const [symbol, setSymbol] = useState('AAPL')
   const [polymarketMode, setPolymarketMode] = useState<'catalog' | 'custom'>('catalog')
   const [polymarketSlug, setPolymarketSlug] = useState(POLYMARKET_CATALOG[0].slug)
@@ -215,6 +220,16 @@ export const TerminalPage = () => {
       window.clearInterval(intervalId)
     }
   }, [])
+
+  useEffect(() => {
+    setVenue(venueFromRoute)
+    setSymbol(DEFAULT_SYMBOLS[venueFromRoute])
+    if (venueFromRoute === 'polymarket') {
+      setPolymarketMode('catalog')
+      setPolymarketSlug(POLYMARKET_CATALOG[0].slug)
+      setPolymarketOutcome('YES')
+    }
+  }, [venueFromRoute])
 
   useEffect(() => {
     if (venue !== 'polymarket' || polymarketMode !== 'catalog') return
@@ -341,16 +356,6 @@ export const TerminalPage = () => {
     return () => window.removeEventListener('keydown', onKey)
   }, [venue, polymarketMode, isCustomOpen])
 
-  const handleVenueChange = (next: Venue) => {
-    setVenue(next)
-    setSymbol(DEFAULT_SYMBOLS[next])
-    if (next === 'polymarket') {
-      setPolymarketMode('catalog')
-      setPolymarketSlug(POLYMARKET_CATALOG[0].slug)
-      setPolymarketOutcome('YES')
-    }
-  }
-
   const orderRows = useMemo(() => {
     return orders.map((order, index) => {
       const amount = order.requestedNotional ?? order.requestedQuantity
@@ -416,30 +421,20 @@ export const TerminalPage = () => {
   const quoteSpread = quote && Number.isFinite(quote.bid) && Number.isFinite(quote.ask) ? quote.ask - quote.bid : undefined
 
   return (
-    <SectionCard title="Terminal">
-      <Text color="surface.muted">
-        Submit simulated market orders and review quote + fill activity from worker-backed APIs. Notional and labels use
-        the display currency ({currency}) chosen in the sidebar.
-      </Text>
+    <Stack spacing={8} align="stretch">
+      <Stack spacing={5} align="stretch">
+        <TerminalVenueHero venue={venue} />
+        <TerminalVenueOverview venue={venue} />
+        <VenuePriceTracker venue={venue} />
+      </Stack>
+
+      <SectionCard title={`Trade · ${venueLabel(venue)}`}>
+        <Text color="surface.muted">
+          Submit simulated market orders and review quote + fill activity from worker-backed APIs. Notional and labels use
+          the display currency ({currency}) chosen in the sidebar. Switch venue with the Terminal links in the sidebar.
+        </Text>
 
       <SimpleGrid columns={{ base: 1, lg: 2 }} spacing={4}>
-        <FormControl>
-          <FormLabel htmlFor="terminal-venue">Venue</FormLabel>
-          <Select
-            id="terminal-venue"
-            value={venue}
-            onChange={(event) => {
-              handleVenueChange(event.target.value as Venue)
-            }}
-          >
-            {VENUES.map((candidateVenue) => (
-              <option value={candidateVenue} key={candidateVenue}>
-                {venueLabel(candidateVenue)}
-              </option>
-            ))}
-          </Select>
-        </FormControl>
-
         {venue === 'polymarket' ? (
           <>
             <FormControl>
@@ -797,6 +792,7 @@ export const TerminalPage = () => {
           Market orders only. Advanced order types are intentionally out of scope for this MVP.
         </Text>
       </Stack>
-    </SectionCard>
+      </SectionCard>
+    </Stack>
   )
 }
