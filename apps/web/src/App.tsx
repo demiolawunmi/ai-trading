@@ -1,3 +1,4 @@
+import { MoonIcon, SunIcon } from '@chakra-ui/icons'
 import {
   Box,
   Button,
@@ -11,8 +12,10 @@ import {
   Flex,
   Heading,
   HStack,
+  IconButton,
   Link,
   Text,
+  useColorMode,
   useDisclosure,
   VStack,
 } from '@chakra-ui/react'
@@ -53,6 +56,20 @@ const renderRoute = (route: AppRoutePath) => {
   return <TerminalPage />
 }
 
+const ColorModeToggle = () => {
+  const { colorMode, toggleColorMode } = useColorMode()
+  const isLight = colorMode === 'light'
+  return (
+    <IconButton
+      aria-label={isLight ? 'Switch to dark mode' : 'Switch to light mode'}
+      icon={isLight ? <MoonIcon /> : <SunIcon />}
+      variant="ghost"
+      size="sm"
+      onClick={toggleColorMode}
+    />
+  )
+}
+
 const NavLinks = ({ route, onNavigate }: { route: AppRoutePath; onNavigate?: () => void }) => (
   <VStack as="nav" aria-label="Primary" align="stretch" spacing={1}>
     {ROUTES.map((item) => (
@@ -62,7 +79,7 @@ const NavLinks = ({ route, onNavigate }: { route: AppRoutePath; onNavigate?: () 
         px={3}
         py={2}
         borderRadius="md"
-        bg={route === item.path ? 'brand.100' : 'transparent'}
+        bg={route === item.path ? 'brand.navHighlight' : 'transparent'}
         _hover={{ textDecoration: 'none', bg: 'surface.hover' }}
         _focusVisible={{ boxShadow: 'outline' }}
         fontWeight={route === item.path ? 'semibold' : 'medium'}
@@ -77,6 +94,13 @@ const NavLinks = ({ route, onNavigate }: { route: AppRoutePath; onNavigate?: () 
 export const App = () => {
   const [route, setRoute] = useState<AppRoutePath>(() => parseRouteFromHash(window.location.hash))
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const { colorMode } = useColorMode()
+
+  useEffect(() => {
+    const root = document.documentElement
+    if (colorMode === 'dark') root.classList.add('dark')
+    else root.classList.remove('dark')
+  }, [colorMode])
 
   useEffect(() => {
     if (!window.location.hash) {
@@ -136,6 +160,9 @@ export const App = () => {
             Local-first simulation shell
           </Text>
           <Divider borderColor="surface.border" />
+          <Flex justify="flex-end">
+            <ColorModeToggle />
+          </Flex>
           <CurrencySelector id="app-display-currency-sidebar" />
           <Divider borderColor="surface.border" />
           <NavLinks route={route} />
@@ -152,6 +179,9 @@ export const App = () => {
               <Text fontSize="sm" color="surface.muted" mb={3}>
                 Local-first simulation shell
               </Text>
+              <Flex justify="flex-end" mb={2}>
+                <ColorModeToggle />
+              </Flex>
               <CurrencySelector id="app-display-currency-drawer" />
               <Divider borderColor="surface.border" my={3} />
               <NavLinks route={route} onNavigate={onClose} />

@@ -4,12 +4,14 @@ import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-const workspaceRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
+const appRoot = path.dirname(fileURLToPath(import.meta.url))
+const workspaceRoot = path.resolve(appRoot, '../..')
 
 export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
+      '@': path.join(appRoot, 'src'),
       // Bundle domain from TS source so ESM named exports resolve (CJS dist breaks Rollup).
       '@ai-trading/domain': path.join(workspaceRoot, 'packages/domain/src/index.ts'),
     },
