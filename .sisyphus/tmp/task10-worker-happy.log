@@ -1,0 +1,4 @@
+
+> @ai-trading/worker@1.0.0 dev
+> ts-node-dev --respawn --transpile-only src/index.ts
+

@@ -1,57 +1,39 @@
-import { Box, HStack, Text } from '@chakra-ui/react'
+import { Badge, Button, HStack, Text } from '@chakra-ui/react'
+
 import { useWorkerAvailability } from '../hooks/useWorkerAvailability'
 
-const formatCheckedAt = (checkedAt: string | null) => {
-  if (!checkedAt) {
-    return 'Status not checked yet'
-  }
-  return `Checked ${new Date(checkedAt).toLocaleTimeString()}`
-}
-
 export const WorkerStatusBanner = () => {
-  const availability = useWorkerAvailability()
+  const { ok, detail, refresh } = useWorkerAvailability()
 
-  if (availability.connected) {
-    return (
-      <HStack
-        role="status"
-        aria-live="polite"
-        bg="surface.successBg"
-        color="surface.successText"
-        borderWidth="1px"
-        borderColor="surface.border"
-        borderRadius="md"
-        px={4}
-        py={3}
-        w="100%"
-        justify="space-between"
-      >
-        <Text fontWeight="semibold">Worker connected</Text>
-        <Text fontSize="sm">{formatCheckedAt(availability.checkedAt)}</Text>
-      </HStack>
-    )
-  }
+  const label =
+    ok === null ? 'Checking worker…' : ok ? 'Worker online' : 'Worker offline'
+
+  const scheme = ok === null ? 'gray' : ok ? 'green' : 'red'
 
   return (
-    <Box
-      role="alert"
-      aria-live="assertive"
-      bg="surface.warningBg"
-      color="surface.warningText"
+    <HStack
+      flex="1"
+      justify="space-between"
       borderWidth="1px"
       borderColor="surface.border"
       borderRadius="md"
+      bg="surface.panel"
       px={4}
       py={3}
-      w="100%"
+      spacing={3}
+      flexWrap="wrap"
     >
-      <Text fontWeight="semibold">Backend disconnected</Text>
-      <Text fontSize="sm">
-        Worker API is unavailable at `http://localhost:4000`. Start the worker to enable trading features.
-      </Text>
-      <Text fontSize="xs" mt={1}>
-        {formatCheckedAt(availability.checkedAt)}
-      </Text>
-    </Box>
+      <HStack spacing={3}>
+        <Badge colorScheme={scheme} variant="subtle">
+          {label}
+        </Badge>
+        <Text fontSize="sm" color="surface.muted">
+          {detail}
+        </Text>
+      </HStack>
+      <Button size="sm" variant="outline" onClick={() => void refresh()}>
+        Retry
+      </Button>
+    </HStack>
   )
 }

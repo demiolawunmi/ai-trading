@@ -1,13 +1,4 @@
-import {
-  Table,
-  TableContainer,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  Tr,
-  Text,
-} from '@chakra-ui/react'
+import { Table, TableContainer, Tbody, Td, Text, Th, Thead, Tr } from '@chakra-ui/react'
 import type { ReactNode } from 'react'
 
 export type ShellDataTableCell = string | ReactNode

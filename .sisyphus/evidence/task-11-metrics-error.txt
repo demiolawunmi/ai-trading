@@ -1,0 +1,7 @@
+# Task 11 Metrics Warning Verification
+
+## Account Metrics with missing mark price
+{"scope":"account","window":"all","metrics":{"realizedPnl":-69.60876872,"unrealizedPnl":32,"totalEquity":101032,"maxDrawdown":69.60876872,"winRate":0,"exposure":0.00427587,"sharpeLikeRatio":0},"warnings":[{"code":"MISSING_MARK_PRICE","message":"One or more symbols are missing mark price; unrealized PnL and exposure exclude those symbols.","symbols":["stocks:MSFT"]}],"summary":{"hasActivity":true,"closedTrades":1,"fillCount":2}}
+
+## Invalid window validation
+{"error":{"code":"VALIDATION_ERROR","message":"Invalid request payload","issues":[{"path":"$.window","message":"must be one of: all, 1h, 24h, 7d"}]}}

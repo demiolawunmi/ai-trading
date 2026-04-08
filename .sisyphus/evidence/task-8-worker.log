@@ -1,0 +1,6 @@
+
+> @ai-trading/worker@1.0.0 dev
+> ts-node-dev --respawn --transpile-only src/index.ts
+
+[INFO] 00:14:39 ts-node-dev ver. 2.0.0 (using ts-node ver. 10.9.2, typescript ver. 5.9.3)
+Worker listening on port 4000

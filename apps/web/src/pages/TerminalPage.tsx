@@ -40,11 +40,12 @@ import {
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { SectionCard } from '../components/SectionCard'
 import { ShellDataTable } from '../components/ShellDataTable'
+import { useDisplayCurrency } from '../currencyContext'
 import { venueLabel } from '../venueLabels'
 
 type EntryMode = 'quantity' | 'notional'
 type Side = 'buy' | 'sell'
-type PolymarketUiMode = 'catalog' | 'custom'
+
 type ApiErrorEnvelope = {
   error?: {
     code?: string
@@ -102,9 +103,10 @@ const marketLabelForActivity = (venue: Venue, symbol: string): string => {
 }
 
 export const TerminalPage = () => {
+  const { currency, formatCurrency } = useDisplayCurrency()
   const [venue, setVenue] = useState<Venue>('stocks')
   const [symbol, setSymbol] = useState('AAPL')
-  const [polymarketMode, setPolymarketMode] = useState<PolymarketUiMode>('catalog')
+  const [polymarketMode, setPolymarketMode] = useState<'catalog' | 'custom'>('catalog')
   const [polymarketSlug, setPolymarketSlug] = useState(POLYMARKET_CATALOG[0].slug)
   const [polymarketOutcome, setPolymarketOutcome] = useState<'YES' | 'NO'>('YES')
   const { isOpen: isCustomOpen, onToggle: disclosureToggle } = useDisclosure()
@@ -118,7 +120,10 @@ export const TerminalPage = () => {
 
   const [quote, setQuote] = useState<Quote | null>(null)
   const [quoteError, setQuoteError] = useState<string | null>(null)
+  /** Only true when the user explicitly clicks “Preview Quote” (avoids skeleton flicker on auto-refresh). */
   const [isQuoteLoading, setIsQuoteLoading] = useState(false)
+  /** Subtle background refresh (no layout swap to skeletons). */
+  const [isQuoteRefreshing, setIsQuoteRefreshing] = useState(false)
 
   const [submitError, setSubmitError] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -138,7 +143,7 @@ export const TerminalPage = () => {
     return null
   }, [entryMode, entryValue, parsedEntryValue])
 
-  const canRequestQuote = !symbolError && !sizeError && !isQuoteLoading
+  const canRequestQuote = !symbolError && !sizeError
   const canSubmitOrder = !symbolError && !sizeError && !isSubmitting
 
   const normalizedSymbol = symbol.trim().toUpperCase()
@@ -151,7 +156,11 @@ export const TerminalPage = () => {
     return 1
   }, [parsedEntryValue, quote?.last])
 
-  const buildPayload = useCallback(() => {
+  /**
+   * Quote API: do not send stocks `quantity` derived from the last quote — that created a
+   * feedback loop (quote → payload change → re-fetch → skeleton flicker).
+   */
+  const buildQuoteRequestPayload = useCallback(() => {
     const body: Record<string, unknown> = {
       venue,
       symbol: normalizedSymbol,
@@ -163,13 +172,17 @@ export const TerminalPage = () => {
     }
 
     body.notional = parsedEntryValue
+    return body
+  }, [entryMode, normalizedSymbol, parsedEntryValue, venue])
 
-    if (venue === 'stocks') {
+  /** Order API: for stocks + notional, include quantity implied by the latest quote. */
+  const buildOrderPayload = useCallback(() => {
+    const body = { ...buildQuoteRequestPayload() }
+    if (venue === 'stocks' && entryMode === 'notional') {
       body.quantity = getStocksQuantityFromNotional()
     }
-
     return body
-  }, [entryMode, getStocksQuantityFromNotional, normalizedSymbol, parsedEntryValue, venue])
+  }, [buildQuoteRequestPayload, entryMode, getStocksQuantityFromNotional, venue])
 
   const loadActivity = async () => {
     setActivityError(null)
@@ -183,8 +196,10 @@ export const TerminalPage = () => {
       const ordersPayload = (await ordersResponse.json()) as { orders?: OrderResult[] }
       const fillsPayload = (await fillsResponse.json()) as { fills?: Array<FillPartial | FillComplete> }
 
-      setOrders(ordersPayload.orders ?? [])
-      setFills(fillsPayload.fills ?? [])
+      const nextOrders = ordersPayload.orders ?? []
+      const nextFills = fillsPayload.fills ?? []
+      setOrders((prev) => (JSON.stringify(prev) === JSON.stringify(nextOrders) ? prev : nextOrders))
+      setFills((prev) => (JSON.stringify(prev) === JSON.stringify(nextFills) ? prev : nextFills))
     } catch (error) {
       setActivityError(error instanceof Error ? error.message : 'Failed to load terminal activity.')
     }
@@ -194,7 +209,7 @@ export const TerminalPage = () => {
     void loadActivity()
     const intervalId = window.setInterval(() => {
       void loadActivity()
-    }, 10000)
+    }, 30000)
 
     return () => {
       window.clearInterval(intervalId)
@@ -213,36 +228,47 @@ export const TerminalPage = () => {
     setLastResult(null)
   }, [venue, symbol, entryMode, entryValue, side])
 
-  const requestQuote = useCallback(async () => {
-    if (!canRequestQuote) return
+  const requestQuote = useCallback(
+    async (options?: { silent?: boolean; showSkeleton?: boolean }) => {
+      if (!canRequestQuote) return
 
-    setIsQuoteLoading(true)
-    setQuoteError(null)
-    setSubmitError(null)
+      const silent = options?.silent === true
+      const showSkeleton = options?.showSkeleton === true
 
-    const body = buildPayload()
-
-    try {
-      const response = await fetch('/api/quote', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      })
-
-      if (!response.ok) {
-        const errorPayload = (await response.json()) as ApiErrorEnvelope
-        throw new Error(toApiErrorMessage(errorPayload, 'Quote request failed.'))
+      if (showSkeleton) {
+        setIsQuoteLoading(true)
+      } else if (silent) {
+        setIsQuoteRefreshing(true)
       }
+      setQuoteError(null)
+      setSubmitError(null)
 
-      const payload = (await response.json()) as Quote
-      setQuote(payload)
-    } catch (error) {
-      setQuote(null)
-      setQuoteError(error instanceof Error ? error.message : 'Quote request failed.')
-    } finally {
-      setIsQuoteLoading(false)
-    }
-  }, [buildPayload, canRequestQuote])
+      const body = buildQuoteRequestPayload()
+
+      try {
+        const response = await fetch('/api/quote', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        })
+
+        if (!response.ok) {
+          const errorPayload = (await response.json()) as ApiErrorEnvelope
+          throw new Error(toApiErrorMessage(errorPayload, 'Quote request failed.'))
+        }
+
+        const payload = (await response.json()) as Quote
+        setQuote(payload)
+      } catch (error) {
+        setQuote(null)
+        setQuoteError(error instanceof Error ? error.message : 'Quote request failed.')
+      } finally {
+        setIsQuoteLoading(false)
+        setIsQuoteRefreshing(false)
+      }
+    },
+    [buildQuoteRequestPayload, canRequestQuote],
+  )
 
   const submitOrder = async () => {
     if (!canSubmitOrder) return
@@ -251,7 +277,7 @@ export const TerminalPage = () => {
     setSubmitError(null)
 
     const body = {
-      ...buildPayload(),
+      ...buildOrderPayload(),
       side,
     }
 
@@ -278,6 +304,7 @@ export const TerminalPage = () => {
     }
   }
 
+  // Auto-refresh quotes when inputs change; silent (no skeleton) to keep layout stable.
   useEffect(() => {
     if (!canRequestQuote) {
       setQuote(null)
@@ -285,13 +312,13 @@ export const TerminalPage = () => {
     }
 
     const timeoutId = window.setTimeout(() => {
-      void requestQuote()
-    }, 350)
+      void requestQuote({ silent: true })
+    }, 400)
 
     return () => {
       window.clearTimeout(timeoutId)
     }
-  }, [requestQuote, canRequestQuote])
+  }, [requestQuote, canRequestQuote, venue, symbol, entryMode, entryValue])
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -390,7 +417,10 @@ export const TerminalPage = () => {
 
   return (
     <SectionCard title="Terminal">
-      <Text color="surface.muted">Submit simulated market orders and review quote + fill activity from worker-backed APIs.</Text>
+      <Text color="surface.muted">
+        Submit simulated market orders and review quote + fill activity from worker-backed APIs. Notional and labels use
+        the display currency ({currency}) chosen in the sidebar.
+      </Text>
 
       <SimpleGrid columns={{ base: 1, lg: 2 }} spacing={4}>
         <FormControl>
@@ -539,7 +569,9 @@ export const TerminalPage = () => {
         </FormControl>
 
         <FormControl isInvalid={Boolean(sizeError)}>
-          <FormLabel htmlFor="terminal-size">{entryMode === 'quantity' ? 'Quantity' : 'Notional'}</FormLabel>
+          <FormLabel htmlFor="terminal-size">
+            {entryMode === 'quantity' ? 'Quantity' : `Notional (${currency})`}
+          </FormLabel>
           <Input
             id="terminal-size"
             type="number"
@@ -549,12 +581,20 @@ export const TerminalPage = () => {
             step={entryMode === 'quantity' ? '0.000001' : '0.01'}
             placeholder={entryMode === 'quantity' ? '1' : '100'}
           />
+          {entryMode === 'notional' && parsedEntryValue > 0 && Number.isFinite(parsedEntryValue) ? (
+            <FormHelperText>≈ {formatCurrency(parsedEntryValue)}</FormHelperText>
+          ) : null}
           {sizeError ? <FormErrorMessage>{sizeError}</FormErrorMessage> : null}
         </FormControl>
       </SimpleGrid>
 
       <HStack spacing={3}>
-        <Button onClick={requestQuote} isDisabled={!canRequestQuote} isLoading={isQuoteLoading} loadingText="Loading quote">
+        <Button
+          onClick={() => void requestQuote({ showSkeleton: true })}
+          isDisabled={!canRequestQuote}
+          isLoading={isQuoteLoading}
+          loadingText="Loading quote"
+        >
           Preview Quote
         </Button>
         <Button colorScheme="blue" onClick={submitOrder} isDisabled={!canSubmitOrder} isLoading={isSubmitting} loadingText="Submitting">
@@ -562,10 +602,17 @@ export const TerminalPage = () => {
         </Button>
       </HStack>
 
-      <Box borderWidth="1px" borderColor="surface.border" borderRadius="md" p={4}>
-        <Text fontWeight="semibold" mb={3}>
-          Quote Preview
-        </Text>
+      <Box borderWidth="1px" borderColor="surface.border" borderRadius="md" p={4} minH="220px">
+        <HStack justify="space-between" mb={3} align="center">
+          <Text fontWeight="semibold">
+            Quote Preview
+          </Text>
+          {isQuoteRefreshing ? (
+            <Text fontSize="xs" color="surface.muted">
+              Updating…
+            </Text>
+          ) : null}
+        </HStack>
         {isQuoteLoading ? (
           <Stack spacing={3}>
             {venue === 'polymarket' ? <Skeleton height="16px" maxW="320px" /> : null}
@@ -594,7 +641,12 @@ export const TerminalPage = () => {
         ) : null}
 
         {!isQuoteLoading && !quoteError && quote ? (
-          <Stack spacing={3}>
+          <Stack
+            spacing={3}
+            opacity={isQuoteRefreshing ? 0.65 : 1}
+            transition="opacity 0.2s ease-out"
+            pointerEvents={isQuoteRefreshing ? 'none' : 'auto'}
+          >
             {quote.instrumentName ? (
               <Text fontSize="sm" fontWeight="medium">
                 {quote.instrumentName}
@@ -654,7 +706,14 @@ export const TerminalPage = () => {
           </Stack>
         ) : null}
 
-        {!isQuoteLoading && !quoteError && !quote ? <Text color="surface.muted">No quote loaded yet.</Text> : null}
+        {!isQuoteLoading && !quoteError && !quote && !isQuoteRefreshing ? (
+          <Text color="surface.muted">No quote loaded yet.</Text>
+        ) : null}
+        {!isQuoteLoading && !quoteError && !quote && isQuoteRefreshing ? (
+          <Text color="surface.muted" fontSize="sm">
+            Fetching quote…
+          </Text>
+        ) : null}
       </Box>
 
       {submitError ? (

@@ -2,141 +2,60 @@ import {
   Alert,
   AlertDescription,
   AlertIcon,
+  AlertTitle,
   Box,
   FormControl,
   FormLabel,
   Select,
+  SimpleGrid,
   Spinner,
+  Stat,
+  StatLabel,
+  StatNumber,
   Text,
   VStack,
 } from '@chakra-ui/react'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import type { MetricsSnapshot } from '@ai-trading/domain'
+import { useCallback, useEffect, useState } from 'react'
 import { SectionCard } from '../components/SectionCard'
-import { ShellDataTable } from '../components/ShellDataTable'
+import { useDisplayCurrency } from '../currencyContext'
 
-type MetricsSnapshot = {
-  realizedPnl: number
-  unrealizedPnl: number
-  totalEquity: number
-  maxDrawdown: number
-  winRate: number
-  exposure: number
-  sharpeLikeRatio: number
-}
-
-type MetricsWarning = {
-  code: string
-  message: string
-  symbols: string[]
-}
-
-type StrategyRun = {
-  strategyId: string
-}
-
-type MetricsResponse = {
-  scope: 'account' | 'strategy'
-  window: 'all' | '1h' | '24h' | '7d'
-  metrics: MetricsSnapshot
-  warnings: MetricsWarning[]
-  summary: {
-    hasActivity: boolean
-    closedTrades: number
-    fillCount: number
-  }
-}
-
-const formatNumber = (value: number, digits = 8): string => {
-  if (!Number.isFinite(value)) return '--'
-  return value.toLocaleString(undefined, { maximumFractionDigits: digits })
-}
-
-const ACCOUNT_OPTION = '__account__'
-const WINDOWS = ['all', '1h', '24h', '7d'] as const
+const WINDOWS = ['1d', '7d', '30d', 'all'] as const
 type WindowOption = (typeof WINDOWS)[number]
 
 export const MetricsPage = () => {
-  const [strategyOptions, setStrategyOptions] = useState<string[]>([])
-  const [selectedScope, setSelectedScope] = useState<string>(ACCOUNT_OPTION)
-  const [isLoading, setIsLoading] = useState(true)
-  const [windowOption, setWindowOption] = useState<WindowOption>('all')
+  const { formatCurrency } = useDisplayCurrency()
+  const [windowOption, setWindowOption] = useState<WindowOption>('7d')
+  const [metrics, setMetrics] = useState<MetricsSnapshot | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const [metricsResponse, setMetricsResponse] = useState<MetricsResponse | null>(null)
+  const [loading, setLoading] = useState(true)
 
-  const fetchStrategies = useCallback(async () => {
-    const response = await fetch('/api/strategies/status')
-    if (!response.ok) {
-      throw new Error('Could not load strategy list for filtering.')
-    }
-
-    const payload = (await response.json()) as { runs?: StrategyRun[] }
-    const unique = Array.from(new Set((payload.runs ?? []).map((run) => run.strategyId))).sort((a, b) => a.localeCompare(b))
-    setStrategyOptions(unique)
-  }, [])
-
-  const fetchMetrics = useCallback(async (scopeValue: string, selectedWindow: WindowOption) => {
-    const base = scopeValue === ACCOUNT_OPTION ? '/api/metrics' : `/api/metrics?strategyId=${encodeURIComponent(scopeValue)}`
-    const endpoint = `${base}${base.includes('?') ? '&' : '?'}window=${encodeURIComponent(selectedWindow)}`
-    const response = await fetch(endpoint)
-
-    if (!response.ok) {
-      const payload = (await response.json()) as { error?: { message?: string } }
-      throw new Error(payload.error?.message ?? 'Could not load metrics data.')
-    }
-
-    const payload = (await response.json()) as MetricsResponse
-    setMetricsResponse(payload)
-  }, [])
-
-  const load = useCallback(async (scopeValue: string, selectedWindow: WindowOption) => {
-    setIsLoading(true)
+  const load = useCallback(async () => {
+    setLoading(true)
     setError(null)
-
     try {
-      await fetchStrategies()
-      await fetchMetrics(scopeValue, selectedWindow)
-    } catch (loadError) {
-      setMetricsResponse(null)
-      setError(loadError instanceof Error ? loadError.message : 'Could not load metrics data.')
+      const response = await fetch(`/api/metrics?window=${encodeURIComponent(windowOption)}`)
+      if (!response.ok) throw new Error('Failed to load metrics.')
+      const payload = (await response.json()) as MetricsSnapshot
+      setMetrics(payload)
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Failed to load metrics.')
+      setMetrics(null)
     } finally {
-      setIsLoading(false)
+      setLoading(false)
     }
-  }, [fetchMetrics, fetchStrategies])
+  }, [windowOption])
 
   useEffect(() => {
-    void load(selectedScope, windowOption)
-  }, [load, selectedScope, windowOption])
-
-  const rows = useMemo(() => {
-    if (!metricsResponse) return []
-
-    return [
-      ['Realized PnL', formatNumber(metricsResponse.metrics.realizedPnl)],
-      ['Unrealized PnL', formatNumber(metricsResponse.metrics.unrealizedPnl)],
-      ['Total Equity', formatNumber(metricsResponse.metrics.totalEquity)],
-      ['Max Drawdown', formatNumber(metricsResponse.metrics.maxDrawdown)],
-      ['Win Rate', formatNumber(metricsResponse.metrics.winRate)],
-      ['Exposure', formatNumber(metricsResponse.metrics.exposure)],
-      ['Sharpe-like Ratio', formatNumber(metricsResponse.metrics.sharpeLikeRatio)],
-      ['Closed Trades', String(metricsResponse.summary.closedTrades)],
-      ['Complete Fills', String(metricsResponse.summary.fillCount)],
-    ]
-  }, [metricsResponse])
+    void load()
+  }, [load])
 
   return (
     <SectionCard title="Metrics">
-      <Text color="surface.muted">Review account-level and strategy-level PnL + risk metrics from deterministic worker analytics.</Text>
-      <FormControl maxW="360px">
-        <FormLabel htmlFor="metrics-scope">Scope</FormLabel>
-        <Select id="metrics-scope" value={selectedScope} onChange={(event) => setSelectedScope(event.target.value)}>
-          <option value={ACCOUNT_OPTION}>Account</option>
-          {strategyOptions.map((strategyId) => (
-            <option key={strategyId} value={strategyId}>
-              Strategy: {strategyId}
-            </option>
-          ))}
-        </Select>
-      </FormControl>
+      <Text color="surface.muted">
+        Account-level PnL and risk metrics (deterministic simulation snapshot). Amounts use the currency selected in the
+        sidebar.
+      </Text>
 
       <FormControl maxW="220px">
         <FormLabel htmlFor="metrics-window">Window</FormLabel>
@@ -149,7 +68,7 @@ export const MetricsPage = () => {
         </Select>
       </FormControl>
 
-      {isLoading ? (
+      {loading ? (
         <Box borderWidth="1px" borderColor="surface.border" borderRadius="md" p={4}>
           <VStack align="start" spacing={2}>
             <Spinner size="sm" />
@@ -158,38 +77,49 @@ export const MetricsPage = () => {
         </Box>
       ) : null}
 
-      {!isLoading && error ? (
+      {!loading && error ? (
         <Alert status="error" borderRadius="md">
           <AlertIcon />
           <AlertDescription>Unable to load metrics: {error}</AlertDescription>
         </Alert>
       ) : null}
 
-      {!isLoading && !error && metricsResponse && !metricsResponse.summary.hasActivity ? (
-        <Alert status="info" borderRadius="md">
-          <AlertIcon />
-          <AlertDescription>
-            No trading activity available for this scope yet. Place orders or start a strategy run to generate metrics.
-          </AlertDescription>
-        </Alert>
+      {!loading && !error && metrics ? (
+        <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={4}>
+          <Stat borderWidth="1px" borderColor="surface.border" borderRadius="md" p={4}>
+            <StatLabel>Realized PnL</StatLabel>
+            <StatNumber>{formatCurrency(metrics.realizedPnl)}</StatNumber>
+          </Stat>
+          <Stat borderWidth="1px" borderColor="surface.border" borderRadius="md" p={4}>
+            <StatLabel>Unrealized PnL</StatLabel>
+            <StatNumber>{formatCurrency(metrics.unrealizedPnl)}</StatNumber>
+          </Stat>
+          <Stat borderWidth="1px" borderColor="surface.border" borderRadius="md" p={4}>
+            <StatLabel>Total equity</StatLabel>
+            <StatNumber>{formatCurrency(metrics.totalEquity)}</StatNumber>
+          </Stat>
+          <Stat borderWidth="1px" borderColor="surface.border" borderRadius="md" p={4}>
+            <StatLabel>Max drawdown</StatLabel>
+            <StatNumber>{(metrics.maxDrawdown * 100).toFixed(2)}%</StatNumber>
+          </Stat>
+          <Stat borderWidth="1px" borderColor="surface.border" borderRadius="md" p={4}>
+            <StatLabel>Win rate</StatLabel>
+            <StatNumber>{(metrics.winRate * 100).toFixed(1)}%</StatNumber>
+          </Stat>
+          <Stat borderWidth="1px" borderColor="surface.border" borderRadius="md" p={4}>
+            <StatLabel>Exposure</StatLabel>
+            <StatNumber>{(metrics.exposure * 100).toFixed(1)}%</StatNumber>
+          </Stat>
+        </SimpleGrid>
       ) : null}
 
-      {!isLoading && !error
-        ? metricsResponse?.warnings.map((warning) => (
-            <Alert status="warning" borderRadius="md" key={`${warning.code}-${warning.symbols.join(',')}`}>
-              <AlertIcon />
-              <AlertDescription>
-                {warning.message} Symbols: {warning.symbols.join(', ')}.
-              </AlertDescription>
-            </Alert>
-          ))
-        : null}
-
-      <ShellDataTable
-        ariaLabel="Metrics snapshot table"
-        columns={['Metric', 'Value']}
-        rows={rows}
-      />
+      {!loading && !error && !metrics ? (
+        <Alert status="info" borderRadius="md">
+          <AlertIcon />
+          <AlertTitle mr={2}>No data</AlertTitle>
+          <AlertDescription>No metrics available.</AlertDescription>
+        </Alert>
+      ) : null}
     </SectionCard>
   )
 }

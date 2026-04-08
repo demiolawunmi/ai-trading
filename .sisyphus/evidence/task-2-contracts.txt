@@ -1,0 +1,17 @@
+
+> @ai-trading/domain@1.0.0 test
+> vitest run --reporter=verbose
+
+
+ RUN  v1.6.1 /Users/demiladeolawunmi/IdeaProjects/ai-trading/packages/domain
+
+ ✓ tests/contracts.validation.test.ts > domain contract validation > accepts valid market order payload and supports round-trip validation
+ ✓ tests/contracts.validation.test.ts > domain contract validation > rejects malformed order side with explicit path
+ ✓ tests/contracts.validation.test.ts > domain contract validation > accepts valid portfolio update payload and supports round-trip validation
+ ✓ tests/contracts.validation.test.ts > domain event contracts > require deterministic metadata fields on every event shape
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  22:27:28
+   Duration  201ms (transform 28ms, setup 0ms, collect 29ms, tests 3ms, environment 0ms, prepare 42ms)
+

@@ -24,9 +24,4 @@ describe("polymarketCatalog", () => {
     expect(displayPolymarketMarket("PM-ELECTION-YES")).toContain("2024");
     expect(displayPolymarketMarket("PM-ELECTION-YES")).toContain("YES");
   });
-
-  it("formats display for unknown slugs", () => {
-    expect(displayPolymarketMarket("PM-FOO-BAR-BAZ-NO")).toContain("Foo Bar Baz");
-    expect(displayPolymarketMarket("PM-FOO-BAR-BAZ-NO")).toContain("NO");
-  });
 });

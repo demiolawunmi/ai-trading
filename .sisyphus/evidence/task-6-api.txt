@@ -1,0 +1,54 @@
+# Task 6 API Happy Path Evidence
+timestamp=2026-04-08T03:43:24Z
+
+## GET /health
+{"status":"ok"}
+HTTP_STATUS:200
+
+## POST /api/connect/save
+{"venue":"stocks","configured":true,"status":"connected","updatedAt":"2026-01-01T00:00:00.004Z","credentialsStored":["apiKey","apiSecret"]}
+HTTP_STATUS:200
+
+## GET /api/connect/status
+{"venues":{"stocks":{"venue":"stocks","configured":true,"status":"connected","updatedAt":"2026-01-01T00:00:00.004Z"},"crypto":{"venue":"crypto","configured":false,"status":"disconnected","updatedAt":"2026-01-01T00:00:00.001Z"},"jupiter":{"venue":"jupiter","configured":false,"status":"disconnected","updatedAt":"2026-01-01T00:00:00.002Z"},"polymarket":{"venue":"polymarket","configured":false,"status":"disconnected","updatedAt":"2026-01-01T00:00:00.003Z"}}}
+HTTP_STATUS:200
+
+## PATCH /api/portfolio
+{"baseCurrency":"USD","cash":100000,"buyingPower":100000,"equity":101250,"holdings":[{"venue":"stocks","symbol":"AAPL","quantity":10,"averageCost":100,"marketPrice":125}]}
+HTTP_STATUS:200
+
+## POST /api/quote
+{"venue":"stocks","symbol":"AAPL","bid":157.63525517,"ask":157.95084127,"last":157.79304822,"timestamp":"2026-09-24T04:54:17.000Z"}
+HTTP_STATUS:200
+
+## POST /api/orders/market
+{"status":"accepted","venue":"stocks","symbol":"AAPL","side":"buy","orderId":"ord-000002","requestedQuantity":1,"requestedNotional":157.79304822,"filledQuantity":1,"averageFillPrice":157.68197204}
+HTTP_STATUS:200
+
+## GET /api/positions
+{"positions":[{"venue":"stocks","symbol":"AAPL","quantity":11,"averageEntryPrice":105.24381564,"marketPrice":157.68197204,"marketValue":1734.50169244,"unrealizedPnl":576.8197204}]}
+HTTP_STATUS:200
+
+## GET /api/orders
+{"orders":[{"status":"accepted","venue":"stocks","symbol":"AAPL","side":"buy","orderId":"ord-000002","requestedQuantity":1,"requestedNotional":157.79304822,"filledQuantity":1,"averageFillPrice":157.68197204}]}
+HTTP_STATUS:200
+
+## GET /api/fills
+{"fills":[{"type":"FillPartial","correlationId":"corr-000001","timestamp":"2026-01-01T00:00:00.060Z","payload":{"orderId":"ord-000002","venue":"stocks","symbol":"AAPL","side":"buy","quantity":0.38525002,"price":157.8540204,"remainingQuantity":0.61474998}},{"type":"FillComplete","correlationId":"corr-000001","timestamp":"2026-01-01T00:00:00.087Z","payload":{"orderId":"ord-000002","venue":"stocks","symbol":"AAPL","side":"buy","quantity":1,"averagePrice":157.68197203}}]}
+HTTP_STATUS:200
+
+## Strategy lifecycle
+{"run":{"id":"run-000003","strategyId":"mean-reversion-v1","status":"registered","createdAt":"2026-01-01T00:00:00.089Z","updatedAt":"2026-01-01T00:00:00.089Z"}}
+HTTP_STATUS:200
+{"run":{"id":"run-000003","strategyId":"mean-reversion-v1","status":"running","createdAt":"2026-01-01T00:00:00.089Z","updatedAt":"2026-01-01T00:00:00.090Z","startedAt":"2026-01-01T00:00:00.090Z"}}
+HTTP_STATUS:200
+{"run":{"id":"run-000003","strategyId":"mean-reversion-v1","status":"stopped","createdAt":"2026-01-01T00:00:00.089Z","updatedAt":"2026-01-01T00:00:00.091Z","startedAt":"2026-01-01T00:00:00.090Z","stoppedAt":"2026-01-01T00:00:00.091Z"}}
+HTTP_STATUS:200
+{"run":{"id":"run-000003","strategyId":"mean-reversion-v1","status":"stopped","createdAt":"2026-01-01T00:00:00.089Z","updatedAt":"2026-01-01T00:00:00.091Z","startedAt":"2026-01-01T00:00:00.090Z","stoppedAt":"2026-01-01T00:00:00.091Z"}}
+HTTP_STATUS:200
+{"runs":[{"id":"run-000003","strategyId":"mean-reversion-v1","status":"stopped","createdAt":"2026-01-01T00:00:00.089Z","updatedAt":"2026-01-01T00:00:00.091Z","startedAt":"2026-01-01T00:00:00.090Z","stoppedAt":"2026-01-01T00:00:00.091Z"}]}
+HTTP_STATUS:200
+
+## GET /api/metrics
+{"metrics":{"realizedPnl":0,"unrealizedPnl":576.8197204,"totalEquity":101576.8197204,"maxDrawdown":0,"winRate":0,"exposure":0.01707576}}
+HTTP_STATUS:200

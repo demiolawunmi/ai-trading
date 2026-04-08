@@ -113,7 +113,7 @@ Wave 3 (Strategy + Analytics + Hardening): Tasks 10, 11, 12
 > Implementation + Test = ONE task. Never separate.
 > EVERY task MUST have: Agent Profile + Parallelization + QA Scenarios.
 
-- [ ] 1. Scaffold monorepo, frontend, worker, and baseline toolchain
+- [x] 1. Scaffold monorepo, frontend, worker, and baseline toolchain
 
   **What to do**: Create project structure for `apps/web` (React + Chakra UI) and `apps/worker` (local API/strategy worker), shared package `packages/domain`, root scripts (`dev`, `build`, `lint`, `test`, `test:e2e`), env template files, and a basic `/health` endpoint on worker port `4000`.
   **Must NOT do**: Do not implement trading logic or live API calls yet.
@@ -153,7 +153,7 @@ Wave 3 (Strategy + Analytics + Hardening): Tasks 10, 11, 12
 
   **Commit**: YES | Message: `chore(scaffold): initialize web worker domain workspace` | Files: `apps/**, packages/**, package*.json, config files`
 
-- [ ] 2. Define shared trading domain and adapter contracts
+- [x] 2. Define shared trading domain and adapter contracts
 
   **What to do**: Implement shared TypeScript contracts for `Venue`, `MarketOrderRequest`, `OrderResult`, `Position`, `Holding`, `BalanceState`, `Quote`, `StrategyRun`, and event types (`OrderRequested`, `OrderAccepted`, `OrderRejected`, `FillPartial`, `FillComplete`, `PortfolioUpdated`, `MetricsUpdated`). Add runtime schema validation for inbound API payloads.
   **Must NOT do**: Do not encode venue-specific auth internals or advanced order types.
@@ -193,7 +193,7 @@ Wave 3 (Strategy + Analytics + Hardening): Tasks 10, 11, 12
 
   **Commit**: YES | Message: `feat(domain): add normalized trading contracts and event model` | Files: `packages/domain/**`
 
-- [ ] 3. Implement deterministic paper execution engine
+- [x] 3. Implement deterministic paper execution engine
 
   **What to do**: Build execution engine that accepts normalized market orders, validates buying power/holdings constraints, simulates fills with deterministic seed-based latency/slippage/partial-fill rules, and emits ledger events.
   **Must NOT do**: Do not call external live trading APIs; do not add limit/stop logic.
@@ -231,7 +231,7 @@ Wave 3 (Strategy + Analytics + Hardening): Tasks 10, 11, 12
 
   **Commit**: YES | Message: `feat(engine): add deterministic paper execution and rejection rules` | Files: `apps/worker/**, packages/domain/**`
 
-- [ ] 4. Add local-first persistence and event ledger replay
+- [x] 4. Add local-first persistence and event ledger replay
 
   **What to do**: Implement local persistence for balances, holdings, orders, fills, and strategy runs; support startup rehydration and replay from event ledger to rebuild current portfolio/metrics state.
   **Must NOT do**: Do not add external DB dependencies or cloud persistence.
@@ -269,7 +269,7 @@ Wave 3 (Strategy + Analytics + Hardening): Tasks 10, 11, 12
 
   **Commit**: YES | Message: `feat(storage): implement local ledger persistence and replay` | Files: `apps/worker/**`
 
-- [ ] 5. Implement simulated venue adapters for stocks, crypto, Jupiter, and Polymarket
+- [x] 5. Implement simulated venue adapters for stocks, crypto, Jupiter, and Polymarket
 
   **What to do**: Implement 4 adapters behind the shared interface. Each adapter returns deterministic quotes and executes via paper engine path. Include per-venue metadata (trading hours, symbol formatting, min notional/size rules) and consistent error normalization.
   **Must NOT do**: Do not place real orders on external venues; do not implement Polymarket L1/L2 signing flow.
@@ -309,7 +309,7 @@ Wave 3 (Strategy + Analytics + Hardening): Tasks 10, 11, 12
 
   **Commit**: YES | Message: `feat(adapters): add simulated venue adapters for four markets` | Files: `apps/worker/src/adapters/**`
 
-- [ ] 6. Build worker API endpoints for terminal and strategy control
+- [x] 6. Build worker API endpoints for terminal and strategy control
 
   **What to do**: Expose local API endpoints: health, connect status, balances/holdings (read/update), quote retrieval, market order submit, positions/orders/fills query, strategy register/start/stop/status, and metrics retrieval.
   **Must NOT do**: Do not expose raw secrets via API responses or logs.
@@ -348,7 +348,7 @@ Wave 3 (Strategy + Analytics + Hardening): Tasks 10, 11, 12
 
   **Commit**: YES | Message: `feat(api): add local worker endpoints for trading and strategies` | Files: `apps/worker/src/api/**`
 
-- [ ] 7. Implement frontend app shell with Chakra UI and route structure
+- [x] 7. Implement frontend app shell with Chakra UI and route structure
 
   **What to do**: Build React app shell with Chakra provider/theme, responsive layout, nav/route skeleton for Terminal, Portfolio, Strategies, Metrics, and Connect screens. Add shared form, table, and status components.
   **Must NOT do**: Do not implement business logic side effects beyond stubbed data hooks.
@@ -386,7 +386,7 @@ Wave 3 (Strategy + Analytics + Hardening): Tasks 10, 11, 12
 
   **Commit**: YES | Message: `feat(web): add chakra app shell and navigation routes` | Files: `apps/web/**`
 
-- [ ] 8. Deliver manual trading terminal flow (market orders only)
+- [x] 8. Deliver manual trading terminal flow (market orders only)
 
   **What to do**: Implement Terminal screen with venue selector, symbol input, side toggle, quantity/notional input, quote preview, submit order action, order result notifications, and order/fill activity table wired to worker API.
   **Must NOT do**: Do not include limit/stop/advanced order controls.
@@ -425,7 +425,7 @@ Wave 3 (Strategy + Analytics + Hardening): Tasks 10, 11, 12
 
   **Commit**: YES | Message: `feat(terminal): implement manual market-order workflow` | Files: `apps/web/src/features/terminal/**`
 
-- [ ] 9. Build connect management UI with locally saved venue credential forms
+- [x] 9. Build connect management UI with locally saved venue credential forms
 
   **What to do**: Create Connect screen with per-venue credential form schemas, masked-value display, local encrypted-at-rest storage abstraction (best-effort client-side obfuscation + clear security warning), test-connection action against worker sanity checks, and status indicators.
   **Must NOT do**: Do not transmit credentials to third-party endpoints in MVP; do not claim production-grade secret security.
@@ -464,7 +464,7 @@ Wave 3 (Strategy + Analytics + Hardening): Tasks 10, 11, 12
 
   **Commit**: YES | Message: `feat(connect): add local credential forms and connection checks` | Files: `apps/web/src/features/connect/**, apps/worker/src/api/connect/**`
 
-- [ ] 10. Implement strategy runtime foundation in local worker process
+- [x] 10. Implement strategy runtime foundation in local worker process
 
   **What to do**: Add strategy registry and runtime orchestration: register strategy config, start/stop runs, isolated execution loop with heartbeat, deterministic input feed from quote simulator, and event outputs tied to strategy ID.
   **Must NOT do**: Do not implement autonomous live trading connectors or remote execution.
@@ -502,7 +502,7 @@ Wave 3 (Strategy + Analytics + Hardening): Tasks 10, 11, 12
 
   **Commit**: YES | Message: `feat(strategy): add local worker strategy runtime orchestration` | Files: `apps/worker/src/strategy/**`
 
-- [ ] 11. Implement analytics: PnL + risk metrics (account and per-strategy)
+- [x] 11. Implement analytics: PnL + risk metrics (account and per-strategy)
 
   **What to do**: Compute realized PnL, unrealized PnL, total equity, max drawdown, win rate, exposure, and a simple Sharpe-like return ratio from event ledger snapshots. Render Metrics screen with account and strategy views plus time-window filters.
   **Must NOT do**: Do not invent non-deterministic metric formulas; avoid unbounded historical recomputation inefficiency.
@@ -540,7 +540,7 @@ Wave 3 (Strategy + Analytics + Hardening): Tasks 10, 11, 12
 
   **Commit**: YES | Message: `feat(metrics): add pnl and risk analytics for account and strategies` | Files: `apps/worker/src/metrics/**, apps/web/src/features/metrics/**`
 
-- [ ] 12. Harden integration, add full E2E suite, and finalize operator docs
+- [x] 12. Harden integration, add full E2E suite, and finalize operator docs
 
   **What to do**: Wire all flows end-to-end, add integration tests for API + engine + persistence, add Playwright E2E for UI critical paths, and provide concise runbook (`dev`, test, troubleshooting, known MVP limits).
   **Must NOT do**: Do not expand feature scope; only stabilization and verification.
@@ -582,10 +582,10 @@ Wave 3 (Strategy + Analytics + Hardening): Tasks 10, 11, 12
 > 4 review agents run in PARALLEL. ALL must APPROVE. Present consolidated results to user and get explicit "okay" before completing.
 > **Do NOT auto-proceed after verification. Wait for user's explicit approval before marking work complete.**
 > **Never mark F1-F4 as checked before getting user's okay.** Rejection or user feedback -> fix -> re-run -> present again -> wait for okay.
-- [ ] F1. Plan Compliance Audit — oracle
-- [ ] F2. Code Quality Review — unspecified-high
-- [ ] F3. Real Manual QA — unspecified-high (+ playwright if UI)
-- [ ] F4. Scope Fidelity Check — deep
+- [x] F1. Plan Compliance Audit — oracle
+- [x] F2. Code Quality Review — unspecified-high
+- [x] F3. Real Manual QA — unspecified-high (+ playwright if UI)
+- [x] F4. Scope Fidelity Check — deep
 
 ## Commit Strategy
 - Keep atomic commits aligned to one task each.

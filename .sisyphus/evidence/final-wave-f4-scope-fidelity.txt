@@ -1,0 +1,70 @@
+[2026-04-08] Final Wave F4 - Scope Fidelity Check (deep)
+Plan: .sisyphus/plans/paper-trading-terminal-mvp.md
+Reviewer: OpenCode
+
+Scope Matrix
+- Required: React frontend with Chakra UI
+  Implemented: Chakra provider + routed app shell/pages
+  Evidence: apps/web/src/main.tsx:9, apps/web/src/App.tsx:16
+  Gap: none
+  Status: PASS
+
+- Required: Manual market-order terminal flow only
+  Implemented: Terminal uses market-order submit endpoint and explicitly states advanced types out of scope
+  Evidence: apps/web/src/pages/TerminalPage.tsx:369, apps/web/src/pages/TerminalPage.tsx:494, apps/worker/src/api/router.ts:407
+  Gap: none
+  Status: PASS
+
+- Required: Central editable balance + holdings model
+  Implemented: Portfolio UI loads + PATCH saves cash/buying power/holdings via worker API
+  Evidence: apps/web/src/pages/PortfolioPage.tsx:24, apps/web/src/pages/PortfolioPage.tsx:56, apps/worker/src/api/router.ts:349
+  Gap: none
+  Status: PASS
+
+- Required: 4 venues through normalized adapter interface
+  Implemented: Registry exposes stocks/crypto/jupiter/polymarket via shared VenueAdapter contract
+  Evidence: packages/domain/src/contracts.ts:95, apps/worker/src/adapters/venueAdapterRegistry.ts:52
+  Gap: none
+  Status: PASS
+
+- Required: Local worker process + deterministic simulation/persistence/replay
+  Implemented: Deterministic context seed/clock + local ledger/snapshot rehydration
+  Evidence: apps/worker/src/index.ts:31, apps/worker/src/storage/localPersistence.ts:191, apps/worker/src/storage/localPersistence.ts:347
+  Gap: none
+  Status: PASS
+
+- Required: PnL + risk metrics account and strategy scope
+  Implemented: /api/metrics computes account/strategy analytics with windowing; metrics UI renders values/warnings
+  Evidence: apps/worker/src/api/router.ts:560, apps/worker/src/metrics/analytics.ts:269, apps/web/src/pages/MetricsPage.tsx:114
+  Gap: none
+  Status: PASS
+
+- Guardrail: Must NOT have live-money trading
+  Implemented: adapters execute through paper engine path; docs state simulated-only MVP limit
+  Evidence: apps/worker/src/adapters/venueAdapterRegistry.ts:23, README.md:92
+  Gap: none
+  Status: PASS
+
+- Guardrail: Must NOT have advanced order types
+  Implemented: only market order endpoint and UI; no limit/stop/OCO controls
+  Evidence: apps/worker/src/api/router.ts:407, apps/web/src/pages/TerminalPage.tsx:494
+  Gap: none
+  Status: PASS
+
+- Guardrail: Must NOT expose/private-secret backend claims in MVP
+  Implemented: connect flow warns local obfuscation only, worker returns status/masked key metadata only
+  Evidence: apps/web/src/pages/ConnectPage.tsx:328, apps/worker/src/api/router.ts:342
+  Gap: none
+  Status: PASS
+
+Scope-creep review
+- Observed non-blocking additive API drift: both `/api/quote` and `/api/quotes` exist with identical behavior.
+  Evidence: apps/worker/src/api/router.ts:375, apps/worker/src/api/router.ts:391
+  Assessment: Not a forbidden capability increase; low-risk semantics duplication.
+
+Diagnostics summary
+- `npm run lint` completed with 0 errors and 1 warning (`react-hooks/exhaustive-deps`) in apps/web/src/pages/MetricsPage.tsx:108.
+- LSP diagnostics check on apps/web/src/pages/MetricsPage.tsx returned no diagnostics.
+
+VERDICT: APPROVE
+Blocking list: none

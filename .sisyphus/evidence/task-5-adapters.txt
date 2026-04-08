@@ -1,0 +1,47 @@
+
+> @ai-trading/worker@1.0.0 test
+> vitest run --passWithNoTests tests/venueAdapters.test.ts
+
+[33mThe CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.[39m
+
+[7m[1m[36m RUN [39m[22m[27m [36mv1.6.1[39m [90m/Users/demiladeolawunmi/IdeaProjects/ai-trading/apps/worker[39m
+
+ [32m✓[39m tests/venueAdapters.test.ts [2m ([22m[2m13 tests[22m[2m)[22m[90m 12[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m13 passed[39m[22m[90m (13)[39m
+[2m   Start at [22m 23:26:40
+[2m   Duration [22m 342ms[2m (transform 75ms, setup 0ms, collect 78ms, tests 12ms, environment 0ms, prepare 103ms)[22m
+
+
+
+===== npm run build =====
+
+> build
+> npm run build --workspace=@ai-trading/domain && npm run build --workspaces --if-present
+
+
+> @ai-trading/domain@1.0.0 build
+> tsc
+
+
+> @ai-trading/web@1.0.0 build
+> tsc && vite build
+
+vite v5.4.21 building for production...
+transforming...
+src/App.tsx (7:34): "getAppName" is not exported by "../../packages/domain/dist/index.js", imported by "src/App.tsx".
+✓ 1023 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                  0.33 kB │ gzip:   0.25 kB
+dist/assets/index-C6Ik-_JP.js  410.29 kB │ gzip: 133.79 kB
+✓ built in 897ms
+
+> @ai-trading/worker@1.0.0 build
+> tsc -p tsconfig.build.json
+
+
+> @ai-trading/domain@1.0.0 build
+> tsc
+

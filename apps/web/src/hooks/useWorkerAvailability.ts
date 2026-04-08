@@ -1,55 +1,35 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
-const HEALTH_URL = '/health'
-
-type WorkerAvailability = {
-  connected: boolean
-  checkedAt: string | null
-}
-
-const DEFAULT_STATE: WorkerAvailability = {
-  connected: false,
-  checkedAt: null,
-}
+type HealthPayload = { status?: string; app?: string }
 
 export const useWorkerAvailability = () => {
-  const [state, setState] = useState<WorkerAvailability>(DEFAULT_STATE)
+  const [ok, setOk] = useState<boolean | null>(null)
+  const [detail, setDetail] = useState<string>('')
 
-  useEffect(() => {
-    let active = true
-
-    const checkWorker = async () => {
-      try {
-        const response = await fetch(HEALTH_URL)
-        if (!response.ok) {
-          throw new Error('health-check-failed')
-        }
-
-        const payload = (await response.json()) as { status?: string }
-        if (!active) return
-        setState({
-          connected: payload.status === 'ok',
-          checkedAt: new Date().toISOString(),
-        })
-      } catch (_error) {
-        if (!active) return
-        setState({
-          connected: false,
-          checkedAt: new Date().toISOString(),
-        })
+  const ping = useCallback(async () => {
+    try {
+      const response = await fetch('/health')
+      if (!response.ok) {
+        setOk(false)
+        setDetail(`HTTP ${String(response.status)}`)
+        return
       }
-    }
-
-    void checkWorker()
-    const intervalId = window.setInterval(() => {
-      void checkWorker()
-    }, 10000)
-
-    return () => {
-      active = false
-      window.clearInterval(intervalId)
+      const payload = (await response.json()) as HealthPayload
+      setOk(payload.status === 'ok')
+      setDetail(payload.app ? `Worker: ${payload.app}` : 'Worker reachable')
+    } catch {
+      setOk(false)
+      setDetail('Worker unreachable (is it running on :4000?)')
     }
   }, [])
 
-  return state
+  useEffect(() => {
+    void ping()
+    const id = window.setInterval(() => {
+      void ping()
+    }, 15000)
+    return () => window.clearInterval(id)
+  }, [ping])
+
+  return { ok, detail, refresh: ping }
 }

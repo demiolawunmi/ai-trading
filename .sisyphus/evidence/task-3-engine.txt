@@ -1,0 +1,24 @@
+[task-3-engine] Deterministic replay verification
+Timestamp: 2026-04-08T02:57:32Z
+Command 1: npx vitest run tests/replay.seed42.snapshot.test.ts --reporter=dot
+
+[7m[1m[36m RUN [39m[22m[27m [36mv1.6.1[39m [90m/Users/demiladeolawunmi/IdeaProjects/ai-trading/apps/worker[39m
+
+ [32m✓[39m tests/replay.seed42.snapshot.test.ts [2m ([22m[2m1 test[22m[2m)[22m[90m 8[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m   Start at [22m 22:57:32
+[2m   Duration [22m 182ms[2m (transform 37ms, setup 0ms, collect 37ms, tests 8ms, environment 0ms, prepare 37ms)[22m
+
+Command 2: npx vitest run tests/replay.seed42.snapshot.test.ts --reporter=dot
+
+[7m[1m[36m RUN [39m[22m[27m [36mv1.6.1[39m [90m/Users/demiladeolawunmi/IdeaProjects/ai-trading/apps/worker[39m
+
+ [32m✓[39m tests/replay.seed42.snapshot.test.ts [2m ([22m[2m1 test[22m[2m)[22m[90m 8[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m   Start at [22m 22:57:33
+[2m   Duration [22m 221ms[2m (transform 39ms, setup 0ms, collect 38ms, tests 8ms, environment 0ms, prepare 39ms)[22m
+

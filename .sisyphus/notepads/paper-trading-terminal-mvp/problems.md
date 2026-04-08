@@ -1,0 +1,1 @@
+- Open compliance gap: Task 12 acceptance scenario includes portfolio update transition in E2E journey, but current implementation validates this through direct API request in test rather than user-driven portfolio edit UI.

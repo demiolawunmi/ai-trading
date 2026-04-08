@@ -6,14 +6,24 @@
     "ses_29560e470ffe5JupiMw7sHoziK",
     "ses_29560e463ffegpQFCQos6WHUHF",
     "ses_29560e45fffexkQBVvJl3BDITr",
-    "ses_29560e456ffezn3iI3Xp2ekh3O"
+    "ses_29560e456ffezn3iI3Xp2ekh3O",
+    "ses_2952f293cffefKrx6yC6zaU5uL",
+    "ses_294c6e60bffejJAhuZTQzeNz8G",
+    "ses_294c6b0f9ffeUjQRxdI10vY3XM",
+    "ses_294c69da3ffe7G7o0KEbT3lhzA",
+    "ses_294c68c2bffeCWJ7TUllasheGd"
   ],
   "session_origins": {
     "ses_29573f203ffeAL55Yo11vz8LTi": "direct",
     "ses_29560e470ffe5JupiMw7sHoziK": "appended",
     "ses_29560e463ffegpQFCQos6WHUHF": "appended",
     "ses_29560e45fffexkQBVvJl3BDITr": "appended",
-    "ses_29560e456ffezn3iI3Xp2ekh3O": "appended"
+    "ses_29560e456ffezn3iI3Xp2ekh3O": "appended",
+    "ses_2952f293cffefKrx6yC6zaU5uL": "direct",
+    "ses_294c6e60bffejJAhuZTQzeNz8G": "appended",
+    "ses_294c6b0f9ffeUjQRxdI10vY3XM": "appended",
+    "ses_294c69da3ffe7G7o0KEbT3lhzA": "appended",
+    "ses_294c68c2bffeCWJ7TUllasheGd": "appended"
   },
   "plan_name": "paper-trading-terminal-mvp",
   "agent": "atlas",
@@ -25,6 +35,70 @@
       "session_id": "ses_29560e456ffezn3iI3Xp2ekh3O",
       "agent": "librarian",
       "updated_at": "2026-04-08T01:08:08.680Z"
+    },
+    "todo:6": {
+      "task_key": "todo:6",
+      "task_label": "6",
+      "task_title": "Build worker API endpoints for terminal and strategy control",
+      "session_id": "ses_294c68c2bffeCWJ7TUllasheGd",
+      "agent": "oracle",
+      "updated_at": "2026-04-08T03:55:22.836Z"
+    },
+    "todo:7": {
+      "task_key": "todo:7",
+      "task_label": "7",
+      "task_title": "Implement frontend app shell with Chakra UI and route structure",
+      "session_id": "ses_294c69da3ffe7G7o0KEbT3lhzA",
+      "agent": "librarian",
+      "updated_at": "2026-04-08T04:05:44.914Z"
+    },
+    "todo:8": {
+      "task_key": "todo:8",
+      "task_label": "8",
+      "task_title": "Deliver manual trading terminal flow (market orders only)",
+      "session_id": "ses_294b6888fffeohv6vbo6ILPONL",
+      "agent": "general",
+      "updated_at": "2026-04-08T04:20:28.252Z"
+    },
+    "todo:9": {
+      "task_key": "todo:9",
+      "task_label": "9",
+      "task_title": "Build connect management UI with locally saved venue credential forms",
+      "session_id": "ses_294aba2c1ffeSE654Jtt1vRx9w",
+      "agent": "general",
+      "updated_at": "2026-04-08T04:30:55.198Z"
+    },
+    "todo:10": {
+      "task_key": "todo:10",
+      "task_label": "10",
+      "task_title": "Implement strategy runtime foundation in local worker process",
+      "session_id": "ses_294a0b5a3ffeAQot4TK7X0oxPE",
+      "agent": "general",
+      "updated_at": "2026-04-08T04:41:53.141Z"
+    },
+    "todo:11": {
+      "task_key": "todo:11",
+      "task_label": "11",
+      "task_title": "Implement analytics: PnL + risk metrics (account and per-strategy)",
+      "session_id": "ses_294993bceffeyopvU8GRDwAhqu",
+      "agent": "general",
+      "updated_at": "2026-04-08T04:56:58.377Z"
+    },
+    "todo:12": {
+      "task_key": "todo:12",
+      "task_label": "12",
+      "task_title": "Harden integration, add full E2E suite, and finalize operator docs",
+      "session_id": "ses_2948b8fadffeLFEWyl2LsOHlkm",
+      "agent": "general",
+      "updated_at": "2026-04-08T05:06:56.645Z"
+    },
+    "final-wave:f1": {
+      "task_key": "final-wave:f1",
+      "task_label": "F1",
+      "task_title": "Plan Compliance Audit — oracle",
+      "session_id": "ses_29471293effevAgfQdP0W9TQtp",
+      "agent": "general",
+      "updated_at": "2026-04-08T05:31:37.923Z"
     }
   }
 }

@@ -17,6 +17,7 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import { useEffect, useMemo, useState } from 'react'
+import { CurrencySelector } from './components/CurrencySelector'
 import { WorkerStatusBanner } from './components/WorkerStatusBanner'
 import { ConnectPage } from './pages/ConnectPage'
 import { MetricsPage } from './pages/MetricsPage'
@@ -52,13 +53,7 @@ const renderRoute = (route: AppRoutePath) => {
   return <TerminalPage />
 }
 
-const NavLinks = ({
-  route,
-  onNavigate,
-}: {
-  route: AppRoutePath
-  onNavigate?: () => void
-}) => (
+const NavLinks = ({ route, onNavigate }: { route: AppRoutePath; onNavigate?: () => void }) => (
   <VStack as="nav" aria-label="Primary" align="stretch" spacing={1}>
     {ROUTES.map((item) => (
       <Link
@@ -102,10 +97,6 @@ export const App = () => {
 
   const content = useMemo(() => renderRoute(route), [route])
 
-  const closeDrawerOnNavigate = () => {
-    onClose()
-  }
-
   return (
     <Flex minH="100vh" bg="surface.canvas" color="surface.text" direction="column">
       <Flex
@@ -145,6 +136,8 @@ export const App = () => {
             Local-first simulation shell
           </Text>
           <Divider borderColor="surface.border" />
+          <CurrencySelector id="app-display-currency-sidebar" />
+          <Divider borderColor="surface.border" />
           <NavLinks route={route} />
         </VStack>
 
@@ -159,7 +152,9 @@ export const App = () => {
               <Text fontSize="sm" color="surface.muted" mb={3}>
                 Local-first simulation shell
               </Text>
-              <NavLinks route={route} onNavigate={closeDrawerOnNavigate} />
+              <CurrencySelector id="app-display-currency-drawer" />
+              <Divider borderColor="surface.border" my={3} />
+              <NavLinks route={route} onNavigate={onClose} />
             </DrawerBody>
           </DrawerContent>
         </Drawer>

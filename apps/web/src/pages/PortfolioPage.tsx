@@ -1,9 +1,25 @@
-import { Alert, AlertDescription, AlertIcon, Button, HStack, SimpleGrid, Text } from '@chakra-ui/react'
+import {
+  Alert,
+  AlertDescription,
+  AlertIcon,
+  Box,
+  Button,
+  FormControl,
+  FormHelperText,
+  FormLabel,
+  HStack,
+  Input,
+  Select,
+  SimpleGrid,
+  Text,
+} from '@chakra-ui/react'
 import type { Holding } from '@ai-trading/domain'
-import { useEffect, useMemo, useState } from 'react'
-import { FormField } from '../components/FormField'
+import { useEffect, useState } from 'react'
+import { DISPLAY_CURRENCIES } from '../currencies'
 import { SectionCard } from '../components/SectionCard'
 import { ShellDataTable } from '../components/ShellDataTable'
+import { useDisplayCurrency } from '../currencyContext'
+import { venueLabel } from '../venueLabels'
 
 type PortfolioResponse = {
   baseCurrency: string
@@ -13,6 +29,7 @@ type PortfolioResponse = {
 }
 
 export const PortfolioPage = () => {
+  const { currency: displayCurrency } = useDisplayCurrency()
   const [baseCurrency, setBaseCurrency] = useState('USD')
   const [cash, setCash] = useState('100000')
   const [buyingPower, setBuyingPower] = useState('100000')
@@ -45,103 +62,100 @@ export const PortfolioPage = () => {
   }, [])
 
   const savePortfolio = async () => {
-    const parsedCash = Number(cash)
-    const parsedBuyingPower = Number(buyingPower)
-    if (!Number.isFinite(parsedCash) || !Number.isFinite(parsedBuyingPower)) {
-      setNotice({ tone: 'error', message: 'Cash and Buying Power must be valid numbers.' })
-      return
-    }
-
     setIsSaving(true)
     setNotice(null)
-
     try {
       const response = await fetch('/api/portfolio', {
-        method: 'PATCH',
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           baseCurrency,
-          cash: parsedCash,
-          buyingPower: parsedBuyingPower,
+          cash: Number(cash),
+          buyingPower: Number(buyingPower),
           holdings,
         }),
       })
-
       if (!response.ok) {
-        throw new Error('Portfolio update failed.')
+        throw new Error('Save failed.')
       }
-
-      const payload = (await response.json()) as PortfolioResponse
-      setBaseCurrency(payload.baseCurrency)
-      setCash(String(payload.cash))
-      setBuyingPower(String(payload.buyingPower))
-      setHoldings(payload.holdings ?? [])
-      setNotice({ tone: 'success', message: 'Portfolio saved.' })
+      setNotice({ tone: 'success', message: 'Portfolio saved to worker.' })
     } catch (error) {
-      setNotice({ tone: 'error', message: error instanceof Error ? error.message : 'Portfolio update failed.' })
+      setNotice({
+        tone: 'error',
+        message: error instanceof Error ? error.message : 'Could not save portfolio.',
+      })
     } finally {
       setIsSaving(false)
     }
   }
 
-  const holdingRows = useMemo(
-    () =>
-      holdings.map((holding) => [
-        holding.venue,
-        holding.symbol,
-        String(holding.quantity),
-        String(holding.averageCost),
-      ]),
-    [holdings],
-  )
+  const rows = holdings.map((h, index) => [
+    `${index + 1}`,
+    venueLabel(h.venue),
+    h.symbol,
+    String(h.quantity),
+    h.averageCost.toFixed(4),
+    h.marketPrice !== undefined ? h.marketPrice.toFixed(4) : '—',
+  ])
 
   return (
     <SectionCard title="Portfolio">
       <Text color="surface.muted">
-        Edit cash and buying power, then save through the worker-backed portfolio API.
+        Edit paper account balances and holdings; persisted by the worker for this session. Display currency in the sidebar
+        is {displayCurrency} (formatting); base currency below is stored with your portfolio.
       </Text>
 
       {notice ? (
-        <Alert status={notice.tone} borderRadius="md">
+        <Alert status={notice.tone === 'success' ? 'success' : 'error'} borderRadius="md">
           <AlertIcon />
           <AlertDescription>{notice.message}</AlertDescription>
         </Alert>
       ) : null}
 
-      <Text fontSize="sm" color="surface.muted">
-        Base Currency: {baseCurrency}
-      </Text>
-
       <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
-        <FormField
-          id="portfolio-cash"
-          label="Cash"
-          placeholder="100000"
-          type="number"
-          value={cash}
-          onChange={(event) => setCash(event.target.value)}
-        />
-        <FormField
-          id="portfolio-buying-power"
-          label="Buying Power"
-          placeholder="100000"
-          type="number"
-          value={buyingPower}
-          onChange={(event) => setBuyingPower(event.target.value)}
-        />
+        <FormControl>
+          <FormLabel htmlFor="portfolio-base">Base currency</FormLabel>
+          <Select id="portfolio-base" value={baseCurrency} onChange={(e) => setBaseCurrency(e.target.value)}>
+            {DISPLAY_CURRENCIES.map((c) => (
+              <option key={c.code} value={c.code}>
+                {c.code} — {c.label}
+              </option>
+            ))}
+            {!DISPLAY_CURRENCIES.some((c) => c.code === baseCurrency) && baseCurrency ? (
+              <option value={baseCurrency}>{baseCurrency} (from server)</option>
+            ) : null}
+          </Select>
+          <FormHelperText>Must match one of the supported account currencies.</FormHelperText>
+        </FormControl>
+        <FormControl>
+          <FormLabel htmlFor="portfolio-cash">Cash</FormLabel>
+          <Input id="portfolio-cash" type="number" value={cash} onChange={(e) => setCash(e.target.value)} />
+        </FormControl>
+        <FormControl>
+          <FormLabel htmlFor="portfolio-bp">Buying power</FormLabel>
+          <Input id="portfolio-bp" type="number" value={buyingPower} onChange={(e) => setBuyingPower(e.target.value)} />
+        </FormControl>
       </SimpleGrid>
 
+      <Box>
+        <Text fontWeight="semibold" mb={2}>
+          Holdings
+        </Text>
+        <Text fontSize="sm" color="surface.muted" mb={2}>
+          For a fuller editor, use the Terminal to generate fills first — or extend this table later.
+        </Text>
+        <ShellDataTable
+          ariaLabel="Holdings"
+          columns={['#', 'Venue', 'Symbol', 'Qty', 'Avg cost', 'Mark']}
+          rows={rows}
+        />
+      </Box>
+
       <HStack>
-        <Button onClick={savePortfolio} isLoading={isSaving} loadingText="Saving">
-          Save Portfolio
+        <Button colorScheme="blue" onClick={() => void savePortfolio()} isLoading={isSaving} loadingText="Saving">
+          Save portfolio
         </Button>
       </HStack>
-
-      <ShellDataTable
-        ariaLabel="Portfolio holdings table"
-        columns={['Venue', 'Symbol', 'Quantity', 'Average Cost']}
-        rows={holdingRows}
-      />
     </SectionCard>
   )
 }

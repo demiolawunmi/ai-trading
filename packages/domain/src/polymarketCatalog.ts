@@ -7,7 +7,6 @@ export type PolymarketCatalogEntry = {
   title: string;
 };
 
-/** Curated demo markets — slug must match PM-<slug>-YES|NO */
 export const POLYMARKET_CATALOG: readonly PolymarketCatalogEntry[] = [
   { slug: "ELECTION", title: "Will Candidate A win the 2024 election?" },
   { slug: "CHAMPIONSHIP", title: "Will Team X win the national championship?" },
@@ -34,7 +33,6 @@ export const lookupPolymarketTitle = (normalizedSymbol: string): string | undefi
   return POLYMARKET_CATALOG.find((entry) => entry.slug === parsed.slug)?.title;
 };
 
-/** Human-readable line for any valid PM symbol: catalog title or formatted slug + outcome */
 export const displayPolymarketMarket = (normalizedSymbol: string): string => {
   const parsed = parsePolymarketSymbol(normalizedSymbol);
   if (!parsed) return normalizedSymbol;

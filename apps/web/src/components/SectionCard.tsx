@@ -1,20 +1,20 @@
-import { Box, Heading, VStack, type BoxProps } from '@chakra-ui/react'
+import { Box, Heading, Stack } from '@chakra-ui/react'
 import type { ReactNode } from 'react'
 
 type SectionCardProps = {
   title: string
   children: ReactNode
-} & BoxProps
+}
 
-export const SectionCard = ({ title, children, ...boxProps }: SectionCardProps) => {
+export const SectionCard = ({ title, children }: SectionCardProps) => {
   return (
-    <Box bg="surface.panel" borderWidth="1px" borderColor="surface.border" borderRadius="lg" p={5} {...boxProps}>
-      <VStack align="stretch" spacing={4}>
+    <Box borderWidth="1px" borderColor="surface.border" borderRadius="lg" bg="surface.panel" p={{ base: 4, md: 6 }} boxShadow="sm">
+      <Stack spacing={4} align="stretch">
         <Heading as="h2" size="md">
           {title}
         </Heading>
         {children}
-      </VStack>
+      </Stack>
     </Box>
   )
 }

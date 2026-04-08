@@ -1,0 +1,13 @@
+# Task 11 Metrics Verification
+
+## Health
+{"status":"ok"}
+
+## Account Metrics (default)
+{"scope":"account","window":"all","metrics":{"realizedPnl":-69.60876872,"unrealizedPnl":-104.41315308,"totalEquity":99825.97807824,"maxDrawdown":69.60876872,"winRate":0,"exposure":0.00811398,"sharpeLikeRatio":0},"warnings":[],"summary":{"hasActivity":true,"closedTrades":1,"fillCount":2}}
+
+## Account Metrics (window=24h)
+{"scope":"account","window":"24h","metrics":{"realizedPnl":-69.60876872,"unrealizedPnl":-104.41315308,"totalEquity":99825.97807824,"maxDrawdown":69.60876872,"winRate":0,"exposure":0.00811398,"sharpeLikeRatio":0},"warnings":[],"summary":{"hasActivity":true,"closedTrades":1,"fillCount":2}}
+
+## Strategy Metrics (metrics-strategy)
+{"scope":"strategy","window":"all","metrics":{"realizedPnl":0,"unrealizedPnl":0,"totalEquity":99825.97807824,"maxDrawdown":0,"winRate":0,"exposure":0,"sharpeLikeRatio":0},"warnings":[],"summary":{"hasActivity":false,"closedTrades":0,"fillCount":0},"strategyRun":{"id":"run-000006","strategyId":"metrics-strategy","status":"stopped","createdAt":"2026-01-01T00:00:00.183Z","updatedAt":"2026-01-01T00:00:00.188Z","startedAt":"2026-01-01T00:00:00.183Z","stoppedAt":"2026-01-01T00:00:00.188Z"}}

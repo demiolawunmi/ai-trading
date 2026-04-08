@@ -31,16 +31,6 @@ export interface OrderResult {
   averageFillPrice?: number;
 }
 
-export interface Position {
-  venue: Venue;
-  symbol: string;
-  quantity: number;
-  averageEntryPrice: number;
-  marketPrice: number;
-  marketValue: number;
-  unrealizedPnl: number;
-}
-
 export interface Holding {
   venue: Venue;
   symbol: string;
@@ -71,8 +61,14 @@ export interface Quote {
   ask: number;
   last: number;
   timestamp: string;
-  /** Human-readable label when the venue provides one (e.g. Polymarket question). */
   instrumentName?: string;
+}
+
+export interface QuoteRequest {
+  venue: Venue;
+  symbol: string;
+  quantity?: number;
+  notional?: number;
 }
 
 export type StrategyRunStatus = "registered" | "running" | "stopped" | "failed";
@@ -95,17 +91,4 @@ export interface MetricsSnapshot {
   maxDrawdown: number;
   winRate: number;
   exposure: number;
-}
-
-export interface QuoteRequest {
-  venue: Venue;
-  symbol: string;
-  quantity?: number;
-  notional?: number;
-}
-
-export interface VenueAdapter {
-  readonly venue: Venue;
-  getQuote(request: QuoteRequest): Promise<Quote>;
-  placeMarketOrder(request: MarketOrderRequest): Promise<OrderResult>;
 }
